@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import ChatWindow from './components/ChatWindow'
 import MessageInput from './components/MessageInput'
-import ImageUploader from './components/ImageUploader'
 import './styles/index.css'
 
 function App() {

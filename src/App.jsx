@@ -20,7 +20,7 @@ function App() {
     })
 
     const data = await response.json()
-    const assistantReply = { role: 'assistant', content: data.reply }
+    const assistantReply = { role: 'assistant', content: data.message }
     setMessages((prev) => [...prev, assistantReply])
   }
 

@@ -29,9 +29,12 @@ function ChatWindow({ messages }) {
                   : 'text-left max-w-[80%]'
               }`}
             >
-              <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                {msg.content}
-              </ReactMarkdown>
+              <ReactMarkdown
+                  className="prose prose-invert text-white max-w-none"
+                  rehypePlugins={[rehypeHighlight]}
+>
+                  {msg.content}
+                </ReactMarkdown>
             </div>
           </div>
         )

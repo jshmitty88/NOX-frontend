@@ -1,0 +1,5 @@
+[start]
+cmd = "npm run start"
+
+[phases.build]
+cmds = ["npm install", "npm run build"]

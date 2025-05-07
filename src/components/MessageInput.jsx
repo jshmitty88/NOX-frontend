@@ -11,7 +11,7 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex flex-col px-4 py-10 rounded-[24px] bg-[#16283c] min-h-[96px] gap-3">
+    <div className="flex flex-col px-4 py-8 rounded-[24px] bg-[#16283c] min-h-[96px] gap-3">
       {/* Text input */}
       <input
         type="text"

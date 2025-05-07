@@ -13,13 +13,18 @@ function MessageInput({ onSend }) {
   return (
     <div className="flex flex-col justify-between px-4 py-8 rounded-[24px] bg-[#16283c] min-h-[96px] gap-2">
       {/* Text input */}
-      <input
-        type="text"
+      <textarea
+        rows={2}
         placeholder="Type your message..."
-        className="bg-transparent text-white placeholder-white text-base focus:outline-none"
+        className="bg-transparent text-white placeholder-white text-base focus:outline-none resize-none w-full"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSend()
+          }
+        }}
       />
 
       {/* Buttons row */}

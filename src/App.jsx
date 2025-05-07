@@ -1,8 +1,3 @@
-import { useState } from 'react'
-import ChatWindow from './components/ChatWindow'
-import MessageInput from './components/MessageInput'
-import './styles/index.css'
-
 function App() {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Welcome to AnchorAI. How can I help?' }
@@ -17,9 +12,9 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: text })
     })
+
     const data = await response.json()
     const assistantReply = { role: 'assistant', content: data.reply }
-
     setMessages((prev) => [...prev, assistantReply])
   }
 
@@ -28,9 +23,10 @@ function App() {
       <div className="flex-1 overflow-auto px-4 pt-6">
         <ChatWindow messages={messages} />
       </div>
-      <div className="mb-4 px-4">
+      <div className="px-4 mb-4">
         <MessageInput onSend={sendMessage} />
       </div>
+    </div>
   )
 }
 

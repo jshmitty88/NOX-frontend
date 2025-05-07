@@ -28,6 +28,7 @@ function App() {
       <div className="flex-1 overflow-auto px-4 pt-6">
         <ChatWindow messages={messages} />
       </div>
+      <div className="mb-4 px-4">
         <MessageInput onSend={sendMessage} />
       </div>
   )

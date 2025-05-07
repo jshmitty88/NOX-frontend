@@ -11,7 +11,7 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex flex-col px-4 py-8 rounded-[24px] bg-[#16283c] min-h-[96px] gap-3">
+    <div className="flex flex-col justify-between px-4 py-8 rounded-[24px] bg-[#16283c] min-h-[96px] gap-2">
       {/* Text input */}
       <input
         type="text"
@@ -23,10 +23,11 @@ function MessageInput({ onSend }) {
       />
 
       {/* Buttons row */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-end justify-between">
+        {/* Upload Button */}
         <button
           onClick={() => fileInputRef.current.click()}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl font-bold hover:bg-white/20"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl font-bold leading-[1] hover:bg-white/20"
         >
           +
         </button>
@@ -42,9 +43,11 @@ function MessageInput({ onSend }) {
             }
           }}
         />
+
+        {/* Send Button */}
         <button
           onClick={handleSend}
-          className="w-10 h-10 flex items-end justify-center rounded-full bg-white/10 text-white text-xl font-bold leading-none hover:bg-white/20"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl font-bold leading-[1] hover:bg-white/20"
         >
           ↑
         </button>

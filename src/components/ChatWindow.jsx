@@ -1,6 +1,19 @@
+import { useEffect, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
+import rehypeHighlight from 'rehype-highlight'
+
 function ChatWindow({ messages }) {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: 'smooth'
+    })
+  }, [messages])
+
   return (
-    <div className="flex flex-col space-y-2">
+    <div ref={containerRef} className="flex-1 overflow-auto flex flex-col space-y-2 pb-4">
       {messages.map((msg, index) => {
         const isUser = msg.role === 'user'
 
@@ -13,10 +26,12 @@ function ChatWindow({ messages }) {
               className={`px-4 py-2 whitespace-pre-wrap text-white ${
                 isUser
                   ? 'bg-userBubble rounded-2xl max-w-[75%] shadow-sm'
-                  : 'text-left'
+                  : 'text-left max-w-[80%]'
               }`}
             >
-              {msg.content}
+              <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                {msg.content}
+              </ReactMarkdown>
             </div>
           </div>
         )

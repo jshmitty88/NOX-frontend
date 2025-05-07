@@ -44,7 +44,7 @@ function MessageInput({ onSend }) {
         />
         <button
           onClick={handleSend}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl font-bold hover:bg-white/20"
+          className="w-10 h-10 flex items-end justify-center rounded-full bg-white/10 text-white text-xl font-bold hover:bg-white/20"
         >
           ↑
         </button>

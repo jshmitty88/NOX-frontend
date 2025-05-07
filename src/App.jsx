@@ -6,7 +6,7 @@ import 'highlight.js/styles/github-dark.css'
 
 function App() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Welcome to AnchorAI. How can I help?' }
+    { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
   ])
 
   const sendMessage = async (text) => {

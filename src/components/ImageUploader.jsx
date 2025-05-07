@@ -8,9 +8,11 @@ function ImageUploader({ image, setImage }) {
 
   return (
     <div className="mb-4">
-      <label className="block mb-1 text-white">Upload Image (optional)</label>
-      <input
-        type="file"
+      <button
+  className="border border-white rounded-full w-10 h-10 flex items-center justify-center bg-transparent hover:bg-white/10"
+>
+  +
+</button>
         accept="image/*"
         onChange={handleFileChange}
         className="text-white"

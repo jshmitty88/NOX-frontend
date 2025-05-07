@@ -30,7 +30,6 @@ function App() {
       </div>
         <MessageInput onSend={sendMessage} />
       </div>
-    </div>
   )
 }
 

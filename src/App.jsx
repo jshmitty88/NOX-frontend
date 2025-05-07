@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="flex flex-col h-screen bg-background text-white">
       <div className="flex-1 overflow-auto px-4 pt-6 flex flex-col items-center">
-        <img src="/logo.png" alt="NOX logo" className="h-10 mb-6" />
+        <img src="/logo.png" alt="NOX logo" className="h-36 mb-6" />
         <ChatWindow messages={messages} />
       </div>
       <div className="px-4 mb-4">

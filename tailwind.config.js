@@ -5,9 +5,9 @@ module.exports = {
       colors: {
         background: '#0F1C2E',
         userBubble: 'rgba(255,255,255,0.2)',
-        white: '#ffffff',
+        white: '#ffffff'
       },
-    borderRadius: {
-    xl: '20px'
-  }
+    },
+  },
+  plugins: [],
 }

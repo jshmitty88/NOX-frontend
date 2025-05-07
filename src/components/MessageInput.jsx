@@ -14,7 +14,7 @@ function MessageInput({ onSend }) {
       <input
         type="text"
         placeholder="Type your message..."
-        className="flex-1 p-2 rounded border border-white bg-white text-black"
+        className="flex-1 p-2 rounded-xl border border-white bg-transparent text-white"
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSend()}

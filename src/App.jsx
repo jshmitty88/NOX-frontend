@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ChatWindow from './components/ChatWindow'
 import MessageInput from './components/MessageInput'
 import './styles/index.css'
+import 'highlight.js/styles/github-dark.css'
 
 function App() {
   const [messages, setMessages] = useState([

@@ -21,9 +21,9 @@ function MessageInput({ onSend }) {
       />
       <button
         onClick={handleSend}
-        className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100"
+        className="border border-white rounded-full w-10 h-10 flex items-center justify-center bg-transparent hover:bg-white/10"
       >
-        Send
+        ↑
       </button>
     </div>
   )

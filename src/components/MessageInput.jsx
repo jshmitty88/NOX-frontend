@@ -11,7 +11,7 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex items-center gap-2 p-3 rounded-[20px] bg-[#16283c] min-h-[56px]">
+    <div className="flex items-center gap-2 px-4 py-4 rounded-[24px] bg-[#16283c] min-h-[72px]">
       {/* Plus Button */}
       <button
         onClick={() => fileInputRef.current.click()}

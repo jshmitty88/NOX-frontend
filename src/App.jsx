@@ -1,3 +1,8 @@
+import { useState } from 'react'
+import ChatWindow from './components/ChatWindow'
+import MessageInput from './components/MessageInput'
+import './styles/index.css'
+
 function App() {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Welcome to AnchorAI. How can I help?' }

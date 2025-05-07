@@ -28,7 +28,7 @@ function MessageInput({ onSend }) {
       />
 
       {/* Buttons row */}
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between mt-4">
         {/* Upload Button */}
         <button
           onClick={() => fileInputRef.current.click()}

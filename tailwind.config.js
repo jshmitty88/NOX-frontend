@@ -3,11 +3,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#4994D1',
+        background: '#0F1C2E',
         userBubble: 'rgba(255,255,255,0.2)',
         white: '#ffffff',
       },
-    },
-  },
-  plugins: [],
+    borderRadius: {
+    xl: '20px'
+  }
 }

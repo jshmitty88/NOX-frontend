@@ -7,7 +7,6 @@ function App() {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Welcome to AnchorAI. How can I help?' }
   ])
-  const [image, setImage] = useState(null)
 
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }
@@ -30,7 +29,6 @@ function App() {
         <ChatWindow messages={messages} />
       </div>
       <div className="border-t border-white p-4 bg-background">
-        <ImageUploader image={image} setImage={setImage} />
         <MessageInput onSend={sendMessage} />
       </div>
     </div>

@@ -11,11 +11,11 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-[20px] border border-white px-3 py-2 bg-transparent">
-      {/* Upload Button */}
+    <div className="flex items-center gap-2 p-2 rounded-[20px] bg-[#16283c]">
+      {/* Plus Button */}
       <button
         onClick={() => fileInputRef.current.click()}
-        className="w-10 h-10 flex items-center justify-center rounded-full border border-white text-white hover:bg-white/10"
+        className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-xl font-bold hover:bg-white/20"
       >
         +
       </button>
@@ -27,16 +27,16 @@ function MessageInput({ onSend }) {
         onChange={(e) => {
           const file = e.target.files[0]
           if (file) {
-            alert('File selected: ' + file.name) // you can connect this to setImage
+            alert('File selected: ' + file.name) // hook up to setImage later
           }
         }}
       />
 
-      {/* Message Input */}
+      {/* Text Input */}
       <input
         type="text"
         placeholder="Type your message..."
-        className="flex-1 bg-transparent text-white placeholder-white focus:outline-none"
+        className="flex-1 px-3 py-2 bg-transparent text-white placeholder-white text-sm focus:outline-none"
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -45,7 +45,7 @@ function MessageInput({ onSend }) {
       {/* Send Button */}
       <button
         onClick={handleSend}
-        className="w-10 h-10 flex items-center justify-center rounded-full border border-white text-white hover:bg-white/10"
+        className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white text-lg font-bold hover:bg-white/20"
       >
         ↑
       </button>

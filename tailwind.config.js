@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         background: '#0F1C2E',
         userBubble: 'rgba(255,255,255,0.2)',
+        noxBlue: '#00E3FF',
         white: '#ffffff'
       },
     },

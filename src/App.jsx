@@ -25,6 +25,7 @@ function App() {
       const assistantReply = { role: 'assistant', content: data.message }
       setMessages((prev) => [...prev, assistantReply])
   
+    if (shouldRemember) {
       await fetch('https://web-production-1f17.up.railway.app/remember', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,7 +40,14 @@ function App() {
           source_chat_id: "nox-ui"
         })
       })
-    } catch (err) {
+      
+      setMessages((prev) => [
+    ...prev,
+    { role: 'system', content: 'memory updated (automatically)' }
+  ])
+  } // closes if (shouldRemember)
+
+    }catch (err) {
       const errorReply = { role: 'assistant', content: 'Error reaching backend.' }
       setMessages((prev) => [...prev, errorReply])
     }

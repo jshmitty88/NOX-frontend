@@ -37,8 +37,11 @@ useEffect(() => {
   
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
-      setMessages((prev) => [...prev, assistantReply])
-      localStorage.setItem('messages', JSON.stringify([...prev, newMessage]))
+      setMessages((prev) => {
+        const updated = [...prev, assistantReply]
+        localStorage.setItem('messages', JSON.stringify(updated))
+        return updated
+      })
   
     if (shouldRemember) {
       await fetch('https://web-production-1f17.up.railway.app/remember', {

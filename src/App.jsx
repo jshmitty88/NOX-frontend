@@ -4,6 +4,9 @@ import MessageInput from './components/MessageInput'
 import './styles/index.css'
 import 'highlight.js/styles/github-dark.css'
 
+const storedUserId = localStorage.getItem('user_id') || prompt("Enter your user ID:")
+localStorage.setItem('user_id', storedUserId)
+
 function App() {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }

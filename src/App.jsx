@@ -60,12 +60,11 @@ useEffect(() => {
         })
       })
       
-      setMessages((prev) => [
-    ...prev,
-    { role: 'system', content: 'memory updated (automatically)' }
-  ])
-  localStorage.setItem('messages', JSON.stringify([...prev, newMessage]))
-  } // closes if (shouldRemember)
+      setMessages((prev) => {
+        const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
+        localStorage.setItem('messages', JSON.stringify(updated))
+        return updated
+}) // closes if (shouldRemember)
 
     }catch (err) {
       const errorReply = { role: 'assistant', content: 'Error reaching backend.' }

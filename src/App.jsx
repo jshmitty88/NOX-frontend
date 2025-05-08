@@ -11,6 +11,7 @@ function App() {
 
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }
+    const shouldRemember = /remember|update/i.test(text)
     setMessages((prev) => [...prev, userMessage])
   
     try {

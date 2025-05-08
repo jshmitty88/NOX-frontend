@@ -36,6 +36,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          user_id: localStorage.getItem('user_id'),
           topic: "chat-response",
           memory_type: "assistant_reply",
           content: assistantReply.content,

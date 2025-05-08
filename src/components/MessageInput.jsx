@@ -11,7 +11,7 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex flex-col justify-between px-4 py-6 rounded-[24px] border border-noxBlue bg-black min-h-[72px] gap-2">
+    <div className="flex flex-col justify-between px-4 py-6 rounded-[24px] border border-noxBlue bg-[#1E1E1E] min-h-[72px] gap-2">
       {/* Text input */}
       <textarea
         rows={2}
@@ -32,7 +32,7 @@ function MessageInput({ onSend }) {
         {/* Upload Button */}
         <button
           onClick={() => fileInputRef.current.click()}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] text-noxBlue border border-noxBlue text-xl font-bold leading-[1] hover:bg-noxBlue/10"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1E1E1E] text-noxBlue border border-noxBlue text-xl font-bold leading-[1] hover:bg-noxBlue/10"
         >
           +
         </button>
@@ -52,7 +52,7 @@ function MessageInput({ onSend }) {
         {/* Send Button */}
         <button
           onClick={handleSend}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] text-noxBlue border border-noxBlue text-xl font-bold leading-[1] hover:bg-noxBlue/10"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1E1E1E] text-noxBlue border border-noxBlue text-xl font-bold leading-[1] hover:bg-noxBlue/10"
         >
           ↑
         </button>

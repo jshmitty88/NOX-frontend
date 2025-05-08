@@ -11,7 +11,7 @@ function MessageInput({ onSend }) {
   }
 
   return (
-    <div className="flex flex-col justify-between px-4 py-6 rounded-[24px] border border-noxBlue bg-[#1E1E1E] min-h-[72px] gap-2">
+    <div className="flex flex-col justify-between px-4 py-6 rounded-[24px] border border-[#00E3FF]/40 bg-[#1E1E1E] min-h-[72px] gap-2">
       {/* Text input */}
       <textarea
         rows={2}

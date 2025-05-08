@@ -21,7 +21,10 @@ function App() {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify({
+          message: text,
+          user_id: localStorage.getItem('user_id')
+           })
       })
   
       const data = await response.json()

@@ -31,6 +31,7 @@ function App() {
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
       setMessages((prev) => [...prev, assistantReply])
+      localStorage.setItem('messages', JSON.stringify([...prev, newMessage]))
   
     if (shouldRemember) {
       await fetch('https://web-production-1f17.up.railway.app/remember', {
@@ -53,6 +54,7 @@ function App() {
     ...prev,
     { role: 'system', content: 'memory updated (automatically)' }
   ])
+  localStorage.setItem('messages', JSON.stringify([...prev, newMessage]))
   } // closes if (shouldRemember)
 
     }catch (err) {

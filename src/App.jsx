@@ -12,6 +12,20 @@ function App() {
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }
     setMessages((prev) => [...prev, userMessage])
+    await fetch('https://web-production-1f17.up.railway.app/remember', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic: "chat-response",
+        memory_type: "assistant_reply",
+        content: assistantReply.content,
+        tag_agent: "nox",
+        tag_platform: "frontend",
+        tag_department: "general",
+        tag_urgency: "low",
+        source_chat_id: "nox-ui"
+      })
+    })
   
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {

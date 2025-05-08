@@ -30,11 +30,15 @@ function ChatWindow({ messages }) {
   }`}
 >
               <ReactMarkdown
-                  className="prose prose-invert text-white max-w-none"
-                  rehypePlugins={[rehypeHighlight]}
->
-                  {msg.content}
-                </ReactMarkdown>
+                // Applies Tailwind’s dark mode-friendly typography styles
+                // `prose` = enable markdown formatting (headings, lists, etc.)
+                // `prose-invert` = dark mode variant
+                // `max-w-full` = keeps content inside the chat bubble
+                className="prose prose-invert max-w-full"
+                rehypePlugins={[rehypeHighlight]}
+              >
+                {msg.content}
+              </ReactMarkdown>
             </div>
           </div>
         )

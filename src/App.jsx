@@ -65,8 +65,9 @@ useEffect(() => {
         localStorage.setItem('messages', JSON.stringify(updated))
         return updated
 } // closes if (shouldRemember)
+} // closes try block
 
-    }catch (err) {
+catch (err) {
       const errorReply = { role: 'assistant', content: 'Error reaching backend.' }
       setMessages((prev) => [...prev, errorReply])
     }

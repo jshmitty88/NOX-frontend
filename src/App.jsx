@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ChatWindow from './components/ChatWindow'
 import MessageInput from './components/MessageInput'
 import './styles/index.css'

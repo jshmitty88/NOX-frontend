@@ -11,6 +11,6 @@ export default defineConfig({
     port: process.env.PORT,
     host: true,
     strictPort: true,
-    allowedHosts: ['anchorai.up.railway.app']
+    allowedHosts: ['noxops.io']
   }
 })

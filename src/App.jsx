@@ -78,15 +78,16 @@ const handleReflect = async () => {
     const chatText = recentMessages.map(m => `${m.role}: ${m.content}`).join('\n')
 
     // Step 3: Send to /reflect
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: userId,
-        topic: 'reflection',
-        content: chatText,
-        source_chat_id: "nox-ui"
-      })
-    }}
+const response = await fetch('https://web-production-1f17.up.railway.app/reflect', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    user_id: userId,
+    topic: 'reflection',
+    content: chatText,
+    source_chat_id: "nox-ui"
+  })
+})
 
     const data = await response.json()
     setMessages((prev) => [

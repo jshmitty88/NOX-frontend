@@ -9,9 +9,12 @@ localStorage.setItem('user_id', storedUserId)
 
 function App() {
   const userId = localStorage.getItem('user_id')
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
-  ])
+    const [messages, setMessages] = useState(() => {
+    const stored = localStorage.getItem('messages')
+    return stored ? JSON.parse(stored) : [
+      { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
+    ]
+  })
 
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }

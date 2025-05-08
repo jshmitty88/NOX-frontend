@@ -12,10 +12,5 @@ module.exports = {
   },
   plugins: [require('@tailwindcss/typography')]
 }
-/* Fix code block scroll behavior inside chat */
-.prose pre {
-  overflow-x: auto;
-  white-space: pre;
-  padding: 1rem;
-  border-radius: 0.5rem;
+
 }

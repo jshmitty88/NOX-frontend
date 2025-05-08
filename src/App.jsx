@@ -64,7 +64,7 @@ useEffect(() => {
         const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
         localStorage.setItem('messages', JSON.stringify(updated))
         return updated
-} // closes if (shouldRemember)
+}) // closes if (shouldRemember)
 } // closes try block
 
 catch (err) {

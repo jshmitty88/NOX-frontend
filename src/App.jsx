@@ -57,7 +57,7 @@ useEffect(() => {
           tag_department: "general",
           tag_urgency: "low",
           source_chat_id: "nox-ui"
-        })
+
       })
       
       setMessages((prev) => {

@@ -8,6 +8,7 @@ const storedUserId = localStorage.getItem('user_id') || prompt("Enter your user 
 localStorage.setItem('user_id', storedUserId)
 
 function App() {
+  const userId = localStorage.getItem('user_id')
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
   ])

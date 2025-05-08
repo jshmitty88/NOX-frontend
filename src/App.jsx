@@ -67,10 +67,14 @@ useEffect(() => {
 }) // closes if (shouldRemember)
 } // closes try block
 
-}catch (err) {
-      const errorReply = { role: 'assistant', content: 'Error reaching backend.' }
-      setMessages((prev) => [...prev, errorReply])
-    }
+} catch (err) {
+  console.error("❌ Error in sendMessage:", err)
+  const errorReply = {
+    role: 'system',
+    content: 'Error reaching backend. Check logs for details.'
+  }
+  setMessages((prev) => [...prev, errorReply])
+}
   }
 
 const handleReflect = async () => {

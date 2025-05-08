@@ -18,8 +18,7 @@ function App() {
 
 useEffect(() => {
   localStorage.setItem('messages', JSON.stringify(messages))
-}, [messages]
-  }
+}, [messages])
 
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }

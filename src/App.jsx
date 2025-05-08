@@ -59,7 +59,7 @@ useEffect(() => {
           source_chat_id: "nox-ui"
 
       })
-      
+      }
       setMessages((prev) => {
         const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
         localStorage.setItem('messages', JSON.stringify(updated))

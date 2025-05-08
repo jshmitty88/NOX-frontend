@@ -86,7 +86,7 @@ const handleReflect = async () => {
         content: chatText,
         source_chat_id: "nox-ui"
       })
-    }
+    }}
 
     const data = await response.json()
     setMessages((prev) => [

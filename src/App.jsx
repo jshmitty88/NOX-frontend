@@ -24,7 +24,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: text,
-          user_id: localStorage.getItem('user_id')
+          user_id: userId
            })
       })
   

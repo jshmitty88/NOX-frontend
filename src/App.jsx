@@ -43,22 +43,7 @@ function App() {
       setMessages((prev) => [...prev, errorReply])
     }
   }
-  
-    try {
-      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      })
-  
-      const data = await response.json()
-      const assistantReply = { role: 'assistant', content: data.message }
-      setMessages((prev) => [...prev, assistantReply])
-    } catch (err) {
-      const errorReply = { role: 'assistant', content: 'Error reaching backend.' }
-      setMessages((prev) => [...prev, errorReply])
-  }
-}
+
 
   return (
     <div className="flex flex-col h-screen bg-background text-white">

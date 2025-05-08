@@ -67,7 +67,13 @@ function App() {
         <img src="/logo.png" alt="NOX logo" className="h-36 mb-6" />
         <ChatWindow messages={messages} />
       </div>
-      <div className="px-4 mb-4">
+      <div className="px-4 mb-4 space-y-3">
+        <button
+          onClick={handleReflect}
+          className="bg-noxBlue/20 text-white px-4 py-2 rounded-md hover:bg-noxBlue/30"
+        >
+          Reflect
+        </button>
         <MessageInput onSend={sendMessage} />
       </div>
     </div>

@@ -60,6 +60,47 @@ function App() {
     }
   }
 
+const handleReflect = async () => {
+  try {
+    const userId = localStorage.getItem('user_id')
+
+    // Step 1: Get last reflection timestamp
+    const latestRes = await fetch(`https://web-production-1f17.up.railway.app/reflect/latest?user_id=${userId}`)
+    const latestData = await latestRes.json()
+    const lastReflectedAt = latestData.timestamp ? new Date(latestData.timestamp) : null
+
+    // Step 2: Filter messages after that time
+    const recentMessages = lastReflectedAt
+      ? messages.filter(m => m.createdAt && new Date(m.createdAt) > lastReflectedAt)
+      : messages
+
+    const chatText = recentMessages.map(m => `${m.role}: ${m.content}`).join('\n')
+
+    // Step 3: Send to /reflect
+    const response = await fetch('https://web-production-1f17.up.railway.app/reflect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: userId,
+        topic: 'reflection',
+        content: chatText,
+        source_chat_id: "nox-ui"
+      })
+    })
+
+    const data = await response.json()
+    setMessages((prev) => [
+      ...prev,
+      { role: 'system', content: `Reflection complete — ${data.entries_stored || 0} entries saved.` }
+    ])
+  } catch (err) {
+    console.error('Reflect failed:', err)
+    setMessages((prev) => [
+      ...prev,
+      { role: 'system', content: 'Reflection failed. Check logs or try again.' }
+    ])
+  }
+}
 
   return (
     <div className="flex flex-col h-screen bg-background text-white">

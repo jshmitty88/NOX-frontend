@@ -20,10 +20,8 @@ function MessageInput({ onSend }) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            handleSend()
-          }
+          // Do nothing — always allow Enter or Shift+Enter to create a new line
+          return
         }}
       />
 

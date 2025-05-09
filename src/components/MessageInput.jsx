@@ -52,9 +52,9 @@ function MessageInput({ onSend }) {
         {/* Send Button */}
         <button
           onClick={handleSend}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-noxBlue text-black text-xl font-bold leading-[1] hover:bg-noxBlue/30"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-[#1E1E1E]"
         >
-          ↑
+          <span className="text-black text-2xl font-extrabold leading-[1]">↑</span>
         </button>
       </div>
     </div>

@@ -122,10 +122,13 @@ const response = await fetch('https://web-production-1f17.up.railway.app/reflect
   return (
     <div className="flex flex-col h-screen bg-background text-white">
       <div className="flex-1 overflow-auto px-4 pt-6 flex flex-col items-center">
-        <header className="sticky top-0 z-10 bg-black border-b border-[#00E3FF]">
-          <h1 className="text-center text-[#00E3FF] text-2xl font-extrabold tracking-widest py-4">
-            NOX
-          </h1>
+        <header className="sticky top-0 z-10 bg-black border-b border-[#00E3FF] px-4">
+          <div className="flex items-center gap-3 py-3">
+            <img src="/logo-symbol.png" alt="NOX icon" className="h-6 w-6" />
+            <h1 className="text-[#00E3FF] text-xl font-extrabold tracking-widest">
+              NOX
+            </h1>
+          </div>
         </header>
         <ChatWindow messages={messages} />
       </div>

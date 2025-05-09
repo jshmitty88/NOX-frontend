@@ -128,7 +128,7 @@ const response = await fetch('https://web-production-1f17.up.railway.app/reflect
       <div className="px-4 mb-4 space-y-3">
         <button
           onClick={handleReflect}
-          className="bg-noxBlue/20 text-white px-4 py-2 rounded-md hover:bg-noxBlue/30"
+          className="bg-[#1E1E1E] border border-[#00E3FF] text-white px-4 py-2 rounded-[12px] text-sm font-semibold hover:bg-[#2a2a2a]"
         >
           Reflect
         </button>

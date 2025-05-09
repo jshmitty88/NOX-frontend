@@ -43,7 +43,7 @@ function ChatWindow({ messages }) {
                   ),
                   // Numbered list formatting
                   ol: ({ children }) => (
-                    <ol className="list-decimal list-inside space-y-1 text-sm text-white">
+                    <ol className="list-decimal list-inside space-y-2 text-sm text-white pl-0">
                       {children}
                     </ol>
                   ),

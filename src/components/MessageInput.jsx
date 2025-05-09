@@ -34,7 +34,7 @@ function MessageInput({ onSend }) {
           onClick={() => fileInputRef.current.click()}
           className="w-10 h-10 flex items-center justify-center rounded-full bg-noxBlue text-black text-2x1 font-bold leading-[1] hover:bg-noxBlue/30"
         >
-          ＋
+          <PlusIcon className="w-6 h-6 text-[#00E3FF]" />
         </button>
         <input
           ref={fileInputRef}

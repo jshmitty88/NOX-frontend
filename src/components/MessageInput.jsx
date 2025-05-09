@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { PlusIcon } from '@heroicons/react/24/solid'
 
 function MessageInput({ onSend }) {
   const [text, setText] = useState('')

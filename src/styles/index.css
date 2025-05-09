@@ -16,6 +16,12 @@ body {
   overflow-x: auto;
 }
 
+.prose pre code {
+  white-space: pre-wrap;   /* Wrap long lines */
+  word-break: break-word;  /* Break really long tokens */
+  overflow-wrap: break-word;
+}
+
 .prose code {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 0.2em 0.4em;

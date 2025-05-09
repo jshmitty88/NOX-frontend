@@ -30,23 +30,26 @@ function ChatWindow({ messages }) {
   }`}
 >
               <ReactMarkdown
-                className="prose prose-invert max-w-full text-white leading-relaxed"
+                // Removed .prose to disable Tailwind Typography defaults
+                // Replaced with direct list styling that matches ChatGPT
+                className="max-w-full text-white leading-relaxed"
                 rehypePlugins={[rehypeHighlight]}
                 components={{
-                  li: ({ children }) => (
-                    <li className="mb-2 text-sm leading-normal text-white list-disc list-inside">
-                      {children}
-                    </li>
-                  ),
+                  // Bullet list formatting
                   ul: ({ children }) => (
-                    <ul className="mb-4 list-disc list-inside pl-0">
+                    <ul className="list-disc list-inside space-y-1 text-sm text-white">
                       {children}
                     </ul>
                   ),
+                  // Numbered list formatting
                   ol: ({ children }) => (
-                    <ol className="mb-4 list-decimal list-inside pl-0">
+                    <ol className="list-decimal list-inside space-y-1 text-sm text-white">
                       {children}
                     </ol>
+                  ),
+                  // List item spacing
+                  li: ({ children }) => (
+                    <li className="leading-normal">{children}</li>
                   )
                 }}
               >

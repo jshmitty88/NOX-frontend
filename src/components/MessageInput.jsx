@@ -52,7 +52,7 @@ function MessageInput({ onSend }) {
         {/* Send Button */}
         <button
           onClick={handleSend}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-[#1E1E1E]"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-noxBlue"
         >
           <span className="text-black text-2xl font-extrabold leading-[1]">↑</span>
         </button>

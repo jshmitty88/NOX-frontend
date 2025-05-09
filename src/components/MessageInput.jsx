@@ -31,7 +31,7 @@ function MessageInput({ onSend }) {
         {/* Upload Button */}
         <button
           onClick={() => fileInputRef.current.click()}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-noxBlue text-black text-2xl font-bold leading-[1] hover:bg-noxBlue/30"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-noxBlue text-black text-3x2 font-bold leading-[1] hover:bg-noxBlue/30"
         >
           +
         </button>

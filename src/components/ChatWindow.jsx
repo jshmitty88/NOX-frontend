@@ -32,7 +32,7 @@ function ChatWindow({ messages }) {
               <ReactMarkdown
                 // Removed .prose to disable Tailwind Typography defaults
                 // Replaced with direct list styling that matches ChatGPT
-                className="max-w-full text-white leading-relaxed"
+                className="prose prose-invert max-w-full text-white leading-relaxed"
                 rehypePlugins={[rehypeHighlight]}
                 components={{
                   // Bullet list formatting

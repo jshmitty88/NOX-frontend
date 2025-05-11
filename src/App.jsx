@@ -42,67 +42,54 @@ useEffect(() => {
 }, [messages])
 
   const sendMessage = async (text) => {
-  const userMessage = { role: 'user', content: text }
-  const shouldRemember = /remember|update/i.test(text)
-  setMessages((prev) => [...prev, userMessage])
-
-  const recentHistory = messages
-  .slice(-15)
-  .map((msg) => `${msg.role}: ${msg.content}`)
-  .join('\n')
-
-  try {
-    const recentMessages = messages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
-
-    const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        user_id: userId,
-        history: recentMessages
+    const userMessage = { role: 'user', content: text }
+    const shouldRemember = /remember|update/i.test(text)
+    const updatedMessages = [...messages, userMessage]
+    setMessages(updatedMessages)
+  
+    const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+  
+    try {
+      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          user_id: userId,
+          history: recentHistory
+        })
       })
-    })
-
-    const data = await response.json()
-    const assistantReply = { role: 'assistant', content: data.message }
-    setMessages((prev) => {
-      const updated = [...prev, assistantReply]
-      localStorage.setItem('messages', JSON.stringify(updated))
-      return updated
+  
+      const data = await response.json()
+      const assistantReply = { role: 'assistant', content: data.message }
+  
+      const newChat = [...updatedMessages, assistantReply]
+      setMessages(newChat)
+  
+      // Save to chat history
+      await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          messages: [
+            { role: 'user', content: text },
+            { role: 'assistant', content: data.message }
+          ]
+        })
       })
-    
-    // Save both user and assistant messages to chat_history
-    console.log("➡️ Sending chat history...")
-    await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: userId,
-        messages: [
-          {
-            role: 'user',
-            content: text
-          },
-          {
-            role: 'assistant',
-            content: data.message
-          }
-        ]
-      })
-})
-    console.log("✅ Chat history sent")
-    
+  
+      // Memory tagging and storage
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: userMessage.content })
         })
-      
+  
         const tagData = await tagRes.json()
         const tags = tagData.tags || {}
-      
+  
         await fetch('https://web-production-1f17.up.railway.app/remember', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -117,28 +104,16 @@ useEffect(() => {
             source_chat_id: "nox-ui"
           })
         })
-      
-        setMessages((prev) => {
-          const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
-          localStorage.setItem('messages', JSON.stringify(updated))
-          return updated
-        })
-      } // ✅ THIS is where the fetch() ends
-      setMessages((prev) => {
-        const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
-        localStorage.setItem('messages', JSON.stringify(updated))
-        return updated
-}) // closes if (shouldRemember)
-// closes try block
-
-} catch (err) {
-  console.error("❌ Error in sendMessage:", err)
-  const errorReply = {
-    role: 'system',
-    content: 'Error reaching backend. Check logs for details.'
-  }
-  setMessages((prev) => [...prev, errorReply])
-}
+  
+        setMessages((prev) => [...prev, { role: 'system', content: 'memory updated (automatically)' }])
+      }
+    } catch (err) {
+      console.error("❌ Error in sendMessage:", err)
+      setMessages((prev) => [...prev, {
+        role: 'system',
+        content: 'Error reaching backend. Check logs for details.'
+      }])
+    }
   }
 
 const handleReflect = async () => {

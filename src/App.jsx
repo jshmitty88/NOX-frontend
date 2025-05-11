@@ -42,26 +42,29 @@ useEffect(() => {
 }, [messages])
 
   const sendMessage = async (text) => {
-    const userMessage = { role: 'user', content: text }
-    const shouldRemember = /remember|update/i.test(text)
-    setMessages((prev) => [...prev, userMessage])
-  
-    try {
-      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          user_id: userId
-           })
+  const userMessage = { role: 'user', content: text }
+  const shouldRemember = /remember|update/i.test(text)
+  setMessages((prev) => [...prev, userMessage])
+
+  try {
+    const recentMessages = messages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+
+    const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        user_id: userId,
+        history: recentMessages
       })
-  
-      const data = await response.json()
-      const assistantReply = { role: 'assistant', content: data.message }
-      setMessages((prev) => {
-        const updated = [...prev, assistantReply]
-        localStorage.setItem('messages', JSON.stringify(updated))
-        return updated
+    })
+
+    const data = await response.json()
+    const assistantReply = { role: 'assistant', content: data.message }
+    setMessages((prev) => {
+      const updated = [...prev, assistantReply]
+      localStorage.setItem('messages', JSON.stringify(updated))
+      return updated
       })
   
     if (shouldRemember) {

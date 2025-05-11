@@ -59,7 +59,7 @@ useEffect(() => {
         })
       })
 
-      })
+      }
       })  // ✅ THIS is where the fetch() ends
       setMessages((prev) => {
         const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]

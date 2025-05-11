@@ -49,6 +49,14 @@ useEffect(() => {
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
+    console.log("Sending chat history to backend:", {
+      user_id: userId,
+      messages: [
+        { role: 'user', content: text },
+        { role: 'assistant', content: data.message }
+      ]
+    })
+  
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
         method: 'POST',
@@ -62,14 +70,7 @@ useEffect(() => {
   
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
-      
-      console.log("Sending chat history to backend:", {
-      user_id: userId,
-      messages: [
-        { role: 'user', content: text },
-        { role: 'assistant', content: data.message }
-      ]
-    })
+        
 
       // ⬅️ First: await chat history before anything else
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {

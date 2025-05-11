@@ -65,6 +65,8 @@ useEffect(() => {
       })
   
     if (shouldRemember) {
+      const tags = await classifyTags(text)
+    
       await fetch('https://web-production-1f17.up.railway.app/remember', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,7 +80,14 @@ useEffect(() => {
           tag_importance: tags.tag_importance || "medium",
           source_chat_id: "nox-ui"
         })
-      }) // ✅ THIS is where the fetch() ends
+      })
+
+  setMessages((prev) => {
+    const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
+    localStorage.setItem('messages', JSON.stringify(updated))
+    return updated
+  })
+} // ✅ THIS is where the fetch() ends
       setMessages((prev) => {
         const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
         localStorage.setItem('messages', JSON.stringify(updated))

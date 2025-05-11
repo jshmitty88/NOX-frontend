@@ -70,17 +70,17 @@ useEffect(() => {
     ]
   })
 
-await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    user_id: userId,
-    messages: [
-      { role: 'user', content: text },
-      { role: 'assistant', content: data.message }
-    ]
+  await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_id: userId,
+      messages: [
+        { role: 'user', content: text },
+        { role: 'assistant', content: data.message }
+      ]
+    })
   })
-})
     
 // ✅ NEW: Log history after GPT reply is received
 try {

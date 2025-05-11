@@ -62,6 +62,14 @@ useEffect(() => {
   
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
+      
+      console.log("Sending chat history to backend:", {
+      user_id: userId,
+      messages: [
+        { role: 'user', content: text },
+        { role: 'assistant', content: data.message }
+      ]
+    })
 
       // ⬅️ First: await chat history before anything else
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {

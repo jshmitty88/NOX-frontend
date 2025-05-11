@@ -72,18 +72,26 @@ useEffect(() => {
       const assistantReply = { role: 'assistant', content: data.message }
         
 
-      // ⬅️ First: await chat history before anything else
-      await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          messages: [
-            { role: 'user', content: text },
-            { role: 'assistant', content: data.message }
-          ]
-        })
-      })
+const data = await response.json()
+const assistantReply = { role: 'assistant', content: data.message }
+
+// ✅ NEW: Log history after GPT reply is received
+try {
+  await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_id: userId,
+      messages: [
+        { role: 'user', content: text },
+        { role: 'assistant', content: data.message }
+      ]
+    })
+  })
+  console.log("✅ Chat history logged")
+} catch (err) {
+  console.error("❌ Failed to log chat history:", err)
+}
 
 // ⬅️ Then: update message state
 setMessages((prev) => {

@@ -73,22 +73,22 @@ useEffect(() => {
       })
     
     // Save both user and assistant messages to chat_history
-await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    user_id: userId,
-    messages: [
-      {
-        role: 'user',
-        content: text
-      },
-      {
-        role: 'assistant',
-        content: data.message
-      }
-    ]
-  })
+    await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: userId,
+        messages: [
+          {
+            role: 'user',
+            content: text
+          },
+          {
+            role: 'assistant',
+            content: data.message
+          }
+        ]
+      })
 })
   
       if (shouldRemember) {

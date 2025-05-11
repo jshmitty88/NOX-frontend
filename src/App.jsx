@@ -62,11 +62,8 @@ useEffect(() => {
   
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
-  
-      const newChat = [...updatedMessages, assistantReply]
-      setMessages(newChat)
-  
-      // Save to chat history
+
+      // ⬅️ First: await chat history before anything else
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,6 +75,13 @@ useEffect(() => {
           ]
         })
       })
+
+// ⬅️ Then: update message state
+setMessages((prev) => {
+  const updated = [...prev, assistantReply]
+  localStorage.setItem('messages', JSON.stringify(updated))
+  return updated
+})
   
       // Memory tagging and storage
       if (shouldRemember) {

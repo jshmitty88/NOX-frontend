@@ -73,6 +73,7 @@ useEffect(() => {
       })
     
     // Save both user and assistant messages to chat_history
+    console.log("➡️ Sending chat history...")
     await fetch('https://web-production-1f17.up.railway.app/chat-history', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -90,7 +91,8 @@ useEffect(() => {
         ]
       })
 })
-  
+    console.log("✅ Chat history sent")
+    
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',

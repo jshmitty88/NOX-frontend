@@ -15,7 +15,28 @@ function App() {
     { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
   ]
 })
-
+const classifyTags = async (message) => {
+  try {
+    const res = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
+    })
+    const data = await res.json()
+    return data?.tags || {
+      tag_platform: "unknown",
+      tag_department: "general",
+      tag_importance: "medium"
+    }
+  } catch (err) {
+    console.error("❌ Failed to classify tags:", err)
+    return {
+      tag_platform: "unknown",
+      tag_department: "general",
+      tag_importance: "medium"
+    }
+  }
+}
 useEffect(() => {
   localStorage.setItem('messages', JSON.stringify(messages))
 }, [messages])

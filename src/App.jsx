@@ -93,7 +93,7 @@ useEffect(() => {
         localStorage.setItem('messages', JSON.stringify(updated))
         return updated
 }) // closes if (shouldRemember)
-} // closes try block
+// closes try block
 
 } catch (err) {
   console.error("❌ Error in sendMessage:", err)

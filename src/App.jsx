@@ -9,12 +9,19 @@ localStorage.setItem('user_id', storedUserId)
 
 function App() {
   const userId = localStorage.getItem('user_id')
-    const [messages, setMessages] = useState(() => {
+
+const [messages, setMessages] = useState(() => {
   const stored = localStorage.getItem('messages')
-  return stored ? JSON.parse(stored) : [
-    { role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }
-  ]
+  return stored
+    ? JSON.parse(stored)
+    : [{ role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }]
 })
+
+useEffect(() => {
+  localStorage.setItem('messages', JSON.stringify(messages))
+}, [messages])
+
+// GPT-powered dynamic tag classifier
 const classifyTags = async (message) => {
   try {
     const res = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
@@ -37,10 +44,6 @@ const classifyTags = async (message) => {
     }
   }
 }
-useEffect(() => {
-  localStorage.setItem('messages', JSON.stringify(messages))
-}, [messages])
-
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }
     const shouldRemember = /remember|update/i.test(text)
@@ -49,65 +52,46 @@ useEffect(() => {
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
-    const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: text,
-      user_id: userId,
-      history: recentHistory
-    })
-  })
+    try {
+      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          user_id: userId,
+          history: recentHistory
+        })
+      })
   
-  const data = await response.json()
-  const assistantReply = { role: 'assistant', content: data.message }
+      const data = await response.json()
+      const assistantReply = { role: 'assistant', content: data.message }
   
-  console.log("✅ Sending chat history to backend:", {
-    user_id: userId,
-    messages: [
-      { role: 'user', content: text },
-      { role: 'assistant', content: data.message }
-    ]
-  })
-
-  await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      user_id: userId,
-      messages: [
-        { role: 'user', content: text },
-        { role: 'assistant', content: data.message }
-      ]
-    })
-  })
-    
-// ✅ NEW: Log history after GPT reply is received
-try {
-  await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      user_id: userId,
-      messages: [
-        { role: 'user', content: text },
-        { role: 'assistant', content: data.message }
-      ]
-    })
-  })
-  console.log("✅ Chat history logged")
-} catch (err) {
-  console.error("❌ Failed to log chat history:", err)
-}
-}
-// ⬅️ Then: update message state
-setMessages((prev) => {
-  const updated = [...prev, assistantReply]
-  localStorage.setItem('messages', JSON.stringify(updated))
-  return updated
-})
+      // ✅ Chat history logging (user + assistant messages)
+      try {
+        await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            messages: [
+              { role: 'user', content: text },
+              { role: 'assistant', content: assistantReply.content }
+            ]
+          })
+        })
+        console.log("✅ Chat history logged")
+      } catch (err) {
+        console.error("❌ Failed to log chat history:", err)
+      }
   
-      // Memory tagging and storage
+      // ✅ Update message state
+      setMessages((prev) => {
+        const updated = [...prev, assistantReply]
+        localStorage.setItem('messages', JSON.stringify(updated))
+        return updated
+      })
+  
+      // ✅ Memory tagging and storage (if triggered)
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',
@@ -143,22 +127,22 @@ setMessages((prev) => {
       }])
     }
   }
-
-const handleReflect = async () => {
-  try {
-    const userId = localStorage.getItem('user_id')
-
-    // Step 1: Get last reflection timestamp
-    const latestRes = await fetch(`https://web-production-1f17.up.railway.app/reflect/latest?user_id=${userId}`)
-    const latestData = await latestRes.json()
-    const lastReflectedAt = latestData.timestamp ? new Date(latestData.timestamp) : null
-
-    // Step 2: Filter messages after that time
-    const recentMessages = lastReflectedAt
-      ? messages.filter(m => m.createdAt && new Date(m.createdAt) > lastReflectedAt)
-      : messages
-
-    const chatText = recentMessages.map(m => `${m.role}: ${m.content}`).join('\n')
+  
+  const handleReflect = async () => {
+    try {
+      const userId = localStorage.getItem('user_id')
+  
+      // Step 1: Get last reflection timestamp
+      const latestRes = await fetch(`https://web-production-1f17.up.railway.app/reflect/latest?user_id=${userId}`)
+      const latestData = await latestRes.json()
+      const lastReflectedAt = latestData.timestamp ? new Date(latestData.timestamp) : null
+  
+      // Step 2: Filter messages after that time
+      const recentMessages = lastReflectedAt
+        ? messages.filter(m => m.createdAt && new Date(m.createdAt) > lastReflectedAt)
+        : messages
+  
+      const chatText = recentMessages.map(m => `${m.role}: ${m.content}`).join('\n')
 
     // Step 3: Send to /reflect
 const response = await fetch('https://web-production-1f17.up.railway.app/reflect', {

@@ -81,7 +81,6 @@ useEffect(() => {
       ]
     })
   })
-}
     
 // ✅ NEW: Log history after GPT reply is received
 try {
@@ -100,7 +99,7 @@ try {
 } catch (err) {
   console.error("❌ Failed to log chat history:", err)
 }
-
+}
 // ⬅️ Then: update message state
 setMessages((prev) => {
   const updated = [...prev, assistantReply]

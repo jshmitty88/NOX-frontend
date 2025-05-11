@@ -72,28 +72,39 @@ useEffect(() => {
       return updated
       })
   
-    if (shouldRemember) {
-      const tags = await classifyTags(text)
-    
-      await fetch('https://web-production-1f17.up.railway.app/remember', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          topic: "user-input",
-          memory_type: "user_message",
-          content: userMessage.content,
-          tag_platform: tags.tag_platform || "unknown",
-          tag_department: tags.tag_department || "general",
-          tag_importance: tags.tag_importance || "medium",
-          source_chat_id: "nox-ui"
+      if (shouldRemember) {
+        const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userMessage.content })
         })
-      })
-
-  setMessages((prev) => {
-    const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
-    localStorage.setItem('messages', JSON.stringify(updated))
-    return updated
+      
+        const tagData = await tagRes.json()
+        const tags = tagData.tags || {}
+      
+        await fetch('https://web-production-1f17.up.railway.app/remember', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            topic: "user-input",
+            memory_type: "user_message",
+            content: userMessage.content,
+            tag_platform: tags.tag_platform || "unknown",
+            tag_department: tags.tag_department || "general",
+            tag_importance: tags.tag_importance || "medium",
+            source_chat_id: "nox-ui"
+          })
+        })
+      
+        setMessages((prev) => {
+          const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
+          localStorage.setItem('messages', JSON.stringify(updated))
+          return updated
+        })
+      }
+      
+      
   })
 } // ✅ THIS is where the fetch() ends
       setMessages((prev) => {

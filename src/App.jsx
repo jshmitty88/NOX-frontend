@@ -102,11 +102,7 @@ useEffect(() => {
           localStorage.setItem('messages', JSON.stringify(updated))
           return updated
         })
-      }
-      
-      
-  })
-} // ✅ THIS is where the fetch() ends
+      } // ✅ THIS is where the fetch() ends
       setMessages((prev) => {
         const updated = [...prev, { role: 'system', content: 'memory updated (automatically)' }]
         localStorage.setItem('messages', JSON.stringify(updated))

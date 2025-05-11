@@ -68,10 +68,6 @@ useEffect(() => {
         })
       })
   
-      const data = await response.json()
-      const assistantReply = { role: 'assistant', content: data.message }
-        
-
 const data = await response.json()
 const assistantReply = { role: 'assistant', content: data.message }
 

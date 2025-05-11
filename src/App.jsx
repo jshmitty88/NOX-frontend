@@ -49,28 +49,39 @@ useEffect(() => {
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
-    console.log("Sending chat history to backend:", {
+    const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: text,
       user_id: userId,
-      messages: [
-        { role: 'user', content: text },
-        { role: 'assistant', content: data.message }
-      ]
+      history: recentHistory
     })
+  })
   
-    try {
-      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          user_id: userId,
-          history: recentHistory
-        })
-      })
+  const data = await response.json()
+  const assistantReply = { role: 'assistant', content: data.message }
   
-const data = await response.json()
-const assistantReply = { role: 'assistant', content: data.message }
+  console.log("✅ Sending chat history to backend:", {
+    user_id: userId,
+    messages: [
+      { role: 'user', content: text },
+      { role: 'assistant', content: data.message }
+    ]
+  })
 
+await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    user_id: userId,
+    messages: [
+      { role: 'user', content: text },
+      { role: 'assistant', content: data.message }
+    ]
+  })
+})
+    
 // ✅ NEW: Log history after GPT reply is received
 try {
   await fetch('https://web-production-1f17.up.railway.app/chat-history', {

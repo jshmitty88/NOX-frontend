@@ -49,14 +49,15 @@ useEffect(() => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: userId,
-          topic: "chat-response",
-          memory_type: "assistant_reply",
-          content: assistantReply.content,
-          tag_agent: "nox",
-          tag_platform: "frontend",
-          tag_department: "general",
-          tag_urgency: "low",
+          topic: "user-input",
+          memory_type: "user_message",
+          content: userMessage.content,
+          tag_platform: tags.tag_platform || "unknown",
+          tag_department: tags.tag_department || "general",
+          tag_importance: tags.tag_importance || "medium",
           source_chat_id: "nox-ui"
+        })
+      })
 
       })
       })  // ✅ THIS is where the fetch() ends

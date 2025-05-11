@@ -46,6 +46,11 @@ useEffect(() => {
   const shouldRemember = /remember|update/i.test(text)
   setMessages((prev) => [...prev, userMessage])
 
+  const recentHistory = messages
+  .slice(-15)
+  .map((msg) => `${msg.role}: ${msg.content}`)
+  .join('\n')
+
   try {
     const recentMessages = messages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
 

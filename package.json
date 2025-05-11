@@ -1,5 +1,5 @@
 {
-  "name": "nox_frontend",
+  "name": "nox",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",

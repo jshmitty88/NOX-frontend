@@ -81,6 +81,7 @@ useEffect(() => {
       ]
     })
   })
+}
     
 // ✅ NEW: Log history after GPT reply is received
 try {

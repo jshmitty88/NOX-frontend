@@ -44,6 +44,8 @@ const classifyTags = async (message) => {
     }
   }
 }
+
+    //begining of send message function 
   const sendMessage = async (text) => {
     const userMessage = { role: 'user', content: text }
     const shouldRemember = /remember|update/i.test(text)
@@ -51,6 +53,29 @@ const classifyTags = async (message) => {
     setMessages(updatedMessages)
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+  
+    const updateMatch = text.match(/^update (\w+)_?table$/i)
+if (updateMatch) {
+  const tableToUpdate = updateMatch[1]
+
+  const followUp = prompt(`What would you like to add to the ${tableToUpdate}_table?`)
+  if (followUp) {
+    const updatePayload = {
+      table: `${tableToUpdate}_table`,
+      content: followUp
+    }
+
+    await fetch('https://web-production-1f17.up.railway.app/execute_command', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatePayload)
+    })
+
+    setMessages(prev => [...prev, { role: 'system', content: `✅ ${tableToUpdate}_table updated.` }])
+  }
+
+  return // Skip the rest of sendMessage()
+}
   
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {

@@ -54,29 +54,30 @@ const classifyTags = async (message) => {
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
-    const updateMatch = text.match(/^update (\w+)_?table$/i)
-    if (updateMatch) {
-      const tableToUpdate = updateMatch[1]
-    
-      const followUp = prompt(`What would you like to add to the ${tableToUpdate}_table?`)
-      if (followUp) {
-        const updatePayload = {
-          table: `${tableToUpdate}_table`,
-          content: followUp
-        }
-    
-        await fetch('https://web-production-1f17.up.railway.app/execute_command', {
+    // ✅ New logic: route "update" commands to /execute_command
+    if (text.toLowerCase().startsWith("update")) {
+      try {
+        const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatePayload)
+          body: JSON.stringify({
+            message: text,
+            user_id: userId
+          })
         })
-    
-        setMessages(prev => [...prev, { role: 'system', content: `✅ ${tableToUpdate}_table updated.` }])
+        const result = await execRes.json()
+        setMessages((prev) => [...prev, { role: 'system', content: `Command result: ${result.status}` }])
+      } catch (err) {
+        console.error("❌ Failed to execute command:", err)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Error executing command. Check backend logs.'
+        }])
       }
-    
-      return // Skip the rest of sendMessage()
+      return // ✅ Exit early so it doesn't continue to /chat
     }
   
+    // ⬇️ Continue normal /chat flow
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
         method: 'POST',
@@ -91,39 +92,32 @@ const classifyTags = async (message) => {
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
   
-      // ✅ Chat history logging (user + assistant messages)
-      try {
-        await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: userId,
-            messages: [
-              { role: 'user', content: text },
-              { role: 'assistant', content: assistantReply.content }
-            ]
-          })
+      // Log chat history
+      await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          messages: [
+            { role: 'user', content: text },
+            { role: 'assistant', content: data.message }
+          ]
         })
-        console.log("✅ Chat history logged")
-      } catch (err) {
-        console.error("❌ Failed to log chat history:", err)
-      }
+      })
   
-      // ✅ Update message state
       setMessages((prev) => {
         const updated = [...prev, assistantReply]
         localStorage.setItem('messages', JSON.stringify(updated))
         return updated
       })
   
-      // ✅ Memory tagging and storage (if triggered)
+      // Optional memory logic
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: userMessage.content })
         })
-  
         const tagData = await tagRes.json()
         const tags = tagData.tags || {}
   
@@ -144,6 +138,7 @@ const classifyTags = async (message) => {
   
         setMessages((prev) => [...prev, { role: 'system', content: 'memory updated (automatically)' }])
       }
+  
     } catch (err) {
       console.error("❌ Error in sendMessage:", err)
       setMessages((prev) => [...prev, {

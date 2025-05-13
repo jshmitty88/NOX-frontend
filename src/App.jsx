@@ -80,7 +80,7 @@ const classifyTags = async (message) => {
       return
     }
     
-    if (text.toLowerCase().startsWith("update")) {
+    if (text.toLowerCase().startsWith("update client list ")) {
       // Everything else goes to /execute_command
       try {
         const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {

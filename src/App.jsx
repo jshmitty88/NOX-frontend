@@ -104,30 +104,6 @@ const classifyTags = async (message) => {
       return
     }
     
-      try {
-        const res = await fetch(`https://web-production-1f17.up.railway.app/${route}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text,
-            user_id: userId
-          })
-        })
-        const result = await res.json()
-        setMessages((prev) => [...prev, {
-          role: 'system',
-          content: `${route === "update_offer_info" ? "Offer info updated" : "Command result"}: ${result.status || "OK"}`
-        }])
-      } catch (err) {
-        console.error(`❌ Failed to execute ${route}:`, err)
-        setMessages((prev) => [...prev, {
-          role: 'system',
-          content: `Error executing ${route}. Check backend logs.`
-        }])
-      }
-    
-      return
-    }
       
     // ⬇️ Continue normal /chat flow
     try {

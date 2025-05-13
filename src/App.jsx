@@ -54,20 +54,27 @@ const classifyTags = async (message) => {
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
-    // ✅ New logic: route "update" commands to /execute_command
+    // ————————————————————————————————
+// 🧠 Message Routing Logic Begins
+// ————————————————————————————————
+
     const cleanedText = text.trim().toLowerCase()
-    console.log("🧪 cleanedText:", cleanedText)
+    console.log("🧪 cleanedText:", cleanedText) // debug log for input normalization
     
+    // ✅ Step 1: Detect "update offer info for..." and route to /update_offer_info
     if (cleanedText.startsWith("update offer info for")) {
       console.log("➡️ Routing to /update_offer_info")
+    
       try {
         const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, user_id: userId })
         })
+    
         const result = await res.json()
         console.log("✅ /update_offer_info result:", result)
+    
         setMessages((prev) => [...prev, {
           role: 'system',
           content: `Offer info updated: ${result.success ? "✅" : "❌"}`
@@ -79,19 +86,24 @@ const classifyTags = async (message) => {
           content: 'Error updating offer info. Check logs.'
         }])
       }
-      return
+    
+      return // ✅ STOP HERE so it doesn't fall into the next block
     }
     
+    // ✅ Step 2: Fallback for all other "update..." messages — goes to /execute_command
     if (cleanedText.startsWith("update")) {
       console.log("➡️ Routing to /execute_command")
+    
       try {
         const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, user_id: userId })
         })
+    
         const result = await execRes.json()
         console.log("✅ /execute_command result:", result)
+    
         setMessages((prev) => [...prev, {
           role: 'system',
           content: `Command result: ${result.status}`
@@ -103,8 +115,13 @@ const classifyTags = async (message) => {
           content: 'Error executing command. Check backend logs.'
         }])
       }
+    
       return
     }
+
+// ————————————————————————————————
+// 🧠 Message Routing Logic Ends
+// ————————————————————————————————
       
     // ⬇️ Continue normal /chat flow
     try {

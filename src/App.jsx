@@ -55,8 +55,10 @@ const classifyTags = async (message) => {
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
   
     // ✅ New logic: route "update" commands to /execute_command
-    if (/^update\s+offer\s+info\s+for/i.test(text)) {
-      // Route to /update_offer_info if message starts with "update offer info for"
+    const cleanedText = text.trim().toLowerCase()
+
+    if (cleanedText.startsWith("update offer info for")) {
+      // Route to /update_offer_info (case-insensitive and whitespace-safe)
       try {
         const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
           method: 'POST',

@@ -56,8 +56,14 @@ const classifyTags = async (message) => {
   
     // ✅ New logic: route "update" commands to /execute_command
     if (text.toLowerCase().startsWith("update")) {
+      const isOfferUpdate = /update offer info for/i.test(text)
+    
+      const route = isOfferUpdate
+        ? "update_offer_info"
+        : "execute_command"
+    
       try {
-        const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
+        const res = await fetch(`https://web-production-1f17.up.railway.app/${route}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -65,18 +71,22 @@ const classifyTags = async (message) => {
             user_id: userId
           })
         })
-        const result = await execRes.json()
-        setMessages((prev) => [...prev, { role: 'system', content: `Command result: ${result.status}` }])
-      } catch (err) {
-        console.error("❌ Failed to execute command:", err)
+        const result = await res.json()
         setMessages((prev) => [...prev, {
           role: 'system',
-          content: 'Error executing command. Check backend logs.'
+          content: `${route === "update_offer_info" ? "Offer info updated" : "Command result"}: ${result.status || "OK"}`
+        }])
+      } catch (err) {
+        console.error(`❌ Failed to execute ${route}:`, err)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: `Error executing ${route}. Check backend logs.`
         }])
       }
-      return // ✅ Exit early so it doesn't continue to /chat
+    
+      return
     }
-  
+      
     // ⬇️ Continue normal /chat flow
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {

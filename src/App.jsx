@@ -46,13 +46,18 @@ const classifyTags = async (message) => {
 }
 
     //begining of send message function 
-  const sendMessage = async (text) => {
+    const sendMessage = async (text) => {
+    const userId = localStorage.getItem('user_id')
+    console.log("👤 Loaded user_id:", userId)
+  
     const userMessage = { role: 'user', content: text }
     const shouldRemember = /remember|update/i.test(text)
     const updatedMessages = [...messages, userMessage]
     setMessages(updatedMessages)
   
     const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+    const cleanedText = text.trim().toLowerCase()
+    console.log("🧪 cleanedText:", cleanedText)
   
     // ————————————————————————————————
 // 🧠 Message Routing Logic Begins

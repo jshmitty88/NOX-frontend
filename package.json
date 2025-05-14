@@ -5,8 +5,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm run build && npx serve dist -l $PORT",
-    "build": "vite build"
+    "start":  "vite preview --port $PORT"
   },
   "dependencies": {
     "react": "^18.2.0",

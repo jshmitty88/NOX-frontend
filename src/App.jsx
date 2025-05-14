@@ -50,6 +50,7 @@ const classifyTags = async (message) => {
       // ——— Session context and user ID
       const userId = localStorage.getItem('user_id')
       console.log("👤 Loaded user_id:", userId)
+      console.log("✉️ Message received:", text)
     
       const userMessage = { role: 'user', content: text }
       const shouldRemember = /remember|update/i.test(text)

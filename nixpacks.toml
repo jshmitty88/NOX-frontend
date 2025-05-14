@@ -1,5 +1,8 @@
 [start]
-cmd = "npm run start"
+cmd = "npm run preview"
 
 [phases.build]
 cmds = ["npm install", "npm run build"]
+
+[variables]
+PORT = "8080"

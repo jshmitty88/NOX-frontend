@@ -45,6 +45,7 @@ const classifyTags = async (message) => {
   }
 }
 
+    console.log("Deploying updated build...")
     //begining of send message function 
     const sendMessage = async (text) => {
       // ——— Session context and user ID

@@ -63,7 +63,7 @@ const classifyTags = async (message) => {
 // 🧠 Message Routing Logic Begins
 // ————————————————————————————————
 
-    const cleanedText = text.trim().toLowerCase()
+    
     console.log("🧪 cleanedText:", cleanedText) // debug log for input normalization
     
     // ✅ Step 1: Detect "update offer info for..." and route to /update_offer_info

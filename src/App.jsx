@@ -36,7 +36,7 @@ const classifyTags = async (message) => {
       tag_importance: "medium"
     }
   } catch (err) {
-    console.error("❌ Failed to classify tags:", err)
+    console.error("❌ I Failed to classify tags:", err)
     return {
       tag_platform: "unknown",
       tag_department: "general",

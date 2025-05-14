@@ -62,6 +62,45 @@ const classifyTags = async (message) => {
       // 🧠 Message Routing Logic Begins
       // ————————————————————————————————
       const cleanedText = text.trim().toLowerCase()
+      if (cleanedText.startsWith("/search")) {
+        console.log("🔍 Routing to /search_offer_info")
+      
+        const searchQuery = text.replace("/search", "").trim()
+        try {
+          const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: searchQuery })
+          })
+          const result = await res.json()
+          console.log("✅ /search_offer_info result:", result)
+      
+          if (result.status === "success" && result.matches.length > 0) {
+            const formattedMatches = result.matches.map((m, i) => {
+              return `**${i + 1}. ${m.client_name}**\n${m.offer_updates}\n(Similarity: ${m.similarity.toFixed(2)})`
+            }).join("\n\n")
+      
+            setMessages((prev) => [...prev, {
+              role: 'system',
+              content: `**Results for:** _${searchQuery}_\n\n${formattedMatches}`
+            }])
+          } else {
+            setMessages((prev) => [...prev, {
+              role: 'system',
+              content: `No relevant client updates found for: _${searchQuery}_`
+            }])
+          }
+      
+        } catch (err) {
+          console.error("❌ Error calling /search_offer_info:", err)
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: "Error searching offer info. Check backend logs."
+          }])
+        }
+      
+        return // ✅ Stop execution so it doesn’t continue to /chat
+}
       console.log("🧪 cleanedText:", cleanedText)
     
       // ✅ Step 1: Route offer info updates

@@ -11,6 +11,6 @@ export default defineConfig({
     port: process.env.PORT,
     host: true,
     strictPort: true,
-    allowedHosts: ['noxops.io']
+    allowedHosts: ['noxops.io', 'healthcheck.railway.app']
   }
 })

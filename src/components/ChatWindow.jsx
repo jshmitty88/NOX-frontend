@@ -61,7 +61,6 @@ function ChatWindow({ messages }) {
             </div>
           </div>
         )
-        }
     })}
   </div>
 )

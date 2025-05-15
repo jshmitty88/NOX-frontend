@@ -61,3 +61,6 @@ function ChatWindow({ messages }) {
             </div>
           </div>
         )
+        }
+
+export default ChatWindow

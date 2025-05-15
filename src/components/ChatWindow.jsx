@@ -13,7 +13,10 @@ function ChatWindow({ messages }) {
   }, [messages])
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 pt-6 flex flex-col items-center w-full max-w-full">
+    <div
+  ref={containerRef}
+  className="flex-1 overflow-y-auto px-4 pt-6 flex flex-col items-center w-full max-w-full"
+>
       {messages.map((msg, index) => {
         const isUser = msg.role === 'user'
 

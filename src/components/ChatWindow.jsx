@@ -26,12 +26,13 @@ function ChatWindow({ messages }) {
             className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-2`}
           >
             <div
-              className={`px-4 py-2 text-white whitespace-pre-wrap overflow-x-auto break-words max-w-[80%] ${
+              className={`px-4 py-2 text-white break-words whitespace-pre-wrap max-w-[90%] ${
                 isUser
                   ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto'
                   : 'bg-[#2a2a2a] rounded-2xl mr-auto'
               }`}
-            >
+>
+  {/* Content will wrap cleanly for both text and code */}
               <div className="overflow-x-auto">
                 <ReactMarkdown
                   className="prose prose-invert max-w-full text-white leading-relaxed"

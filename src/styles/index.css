@@ -20,6 +20,7 @@ body {
   white-space: pre-wrap;   /* Wrap long lines */
   word-break: break-word;  /* Break really long tokens */
   overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .prose code {

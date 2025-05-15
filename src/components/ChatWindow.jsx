@@ -21,38 +21,38 @@ function ChatWindow({ messages }) {
         const isUser = msg.role === 'user'
 
         return (
+          // Outer container for alignment: full width of screen
           <div
-            //user bubbles 
-            className={`px-4 py-2 text-white break-words whitespace-pre-wrap max-w-[90%] ${
-              isUser
-                ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto text-right min-w-[100px]'
-                : 'text-left'
-            }`}
+            key={index}
+            className={`w-full flex mb-2 ${isUser ? 'justify-end' : 'justify-start'}`}
           >
+            {/* Inner bubble container — styled based on sender */}
             <div
-              //assistant bubbles 
               className={`px-4 py-2 text-white break-words whitespace-pre-wrap max-w-[90%] ${
                 isUser
-                  ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto'
-                  : 'text-left' // Assistant has no bubble
+                  ? 'bg-[#1E1E1E] rounded-2xl shadow-sm text-right min-w-[100px]' // user = dark bubble right-aligned
+                  : '' // assistant = plain flow text (no bubble)
               }`}
             >
-  {/* Content will wrap cleanly for both text and code */}
+              {/* Markdown content wrapper — allows scrollable code */}
               <div className="overflow-x-auto">
                 <ReactMarkdown
                   className="prose prose-invert max-w-full text-white leading-relaxed"
                   rehypePlugins={[rehypeHighlight]}
                   components={{
+                    // Custom bullet formatting
                     ul: ({ children }) => (
                       <ul className="list-disc list-inside space-y-1 text-sm text-white">
                         {children}
                       </ul>
                     ),
+                    // Custom numbered list formatting
                     ol: ({ children }) => (
                       <ol className="list-decimal list-inside space-y-2 text-sm text-white pl-0">
                         {children}
                       </ol>
                     ),
+                    // Custom list item spacing
                     li: ({ children }) => (
                       <li className="leading-normal">{children}</li>
                     )
@@ -64,9 +64,5 @@ function ChatWindow({ messages }) {
             </div>
           </div>
         )
-      })}
-    </div>
-  )
-}
 
 export default ChatWindow

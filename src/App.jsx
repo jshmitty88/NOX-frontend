@@ -69,6 +69,7 @@ const classifyTags = async (message) => {
       // ————————————————————————————————
       const trimmedText = text.trim()
       const command = trimmedText.split(" ")[0].toLowerCase()
+      const cleanedText = trimmedText.toLowerCase()
       
       if (command === "/search") {
         const searchQuery = trimmedText.slice(7).trim()

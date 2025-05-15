@@ -16,11 +16,13 @@ body {
   overflow-x: auto;
 }
 
+/* ChatGPT-style: wrap code cleanly on mobile */
 .prose pre code {
-  white-space: pre-wrap;   /* Wrap long lines */
-  word-break: break-word;  /* Break really long tokens */
-  overflow-wrap: break-word;
-  max-width: 100%;
+  white-space: pre-wrap;       /* Allow line wrapping */
+  word-break: break-word;      /* Break very long strings (e.g. URLs, tokens) */
+  overflow-wrap: break-word;   /* Prevent horizontal overflow */
+  max-width: 100%;             /* Never exceed parent bubble */
+  display: block;              /* Force line-based layout */
 }
 
 .prose code {

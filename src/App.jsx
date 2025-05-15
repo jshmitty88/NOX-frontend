@@ -68,7 +68,12 @@ const classifyTags = async (message) => {
       
       if (command === "/search") {
         const searchQuery = trimmedText.slice(7).trim()
-        console.log("🔍 Routing to /search_offer_info")
+        
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: `🔍 Routing to /search_offer_info for: _${searchQuery}_`
+        }])
+        
         try {
           const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
             method: 'POST',

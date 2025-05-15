@@ -29,32 +29,29 @@ function ChatWindow({ messages }) {
                   : 'text-left max-w-full'
               }`}
             >
-              <ReactMarkdown
-                // Removed .prose to disable Tailwind Typography defaults
-                // Replaced with direct list styling that matches ChatGPT
-                className="prose prose-invert max-w-full text-white leading-relaxed"
-                rehypePlugins={[rehypeHighlight]}
-                components={{
-                  // Bullet list formatting
-                  ul: ({ children }) => (
-                    <ul className="list-disc list-inside space-y-1 text-sm text-white">
-                      {children}
-                    </ul>
-                  ),
-                  // Numbered list formatting
-                  ol: ({ children }) => (
-                    <ol className="list-decimal list-inside space-y-2 text-sm text-white pl-0">
-                      {children}
-                    </ol>
-                  ),
-                  // List item spacing
-                  li: ({ children }) => (
-                    <li className="leading-normal">{children}</li>
-                  )
-                }}
-              >
-                {msg.content}
-              </ReactMarkdown>
+              <div className="overflow-x-auto">
+                <ReactMarkdown
+                  className="prose prose-invert max-w-full text-white leading-relaxed"
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    ul: ({ children }) => (
+                      <ul className="list-disc list-inside space-y-1 text-sm text-white">
+                        {children}
+                      </ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="list-decimal list-inside space-y-2 text-sm text-white pl-0">
+                        {children}
+                      </ol>
+                    ),
+                    li: ({ children }) => (
+                      <li className="leading-normal">{children}</li>
+                    )
+                  }}
+                >
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
             </div>
           </div>
         )

@@ -29,9 +29,9 @@ function ChatWindow({ messages }) {
               className={`px-4 py-2 text-white break-words whitespace-pre-wrap max-w-[90%] ${
                 isUser
                   ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto'
-                  : 'bg-[#2a2a2a] rounded-2xl mr-auto'
+                  : 'text-left' // Assistant has no bubble
               }`}
->
+            >
   {/* Content will wrap cleanly for both text and code */}
               <div className="overflow-x-auto">
                 <ReactMarkdown

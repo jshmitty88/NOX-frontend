@@ -77,6 +77,7 @@ const classifyTags = async (message) => {
           role: 'system',
           content: `🔍 Routing to /search_offer_info for: _${searchQuery}_`
         }])
+        logRoute("/search_offer_info", { trigger: "/search", query: searchQuery })
         
         try {
           const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
@@ -117,6 +118,7 @@ const classifyTags = async (message) => {
     
       // ✅ Step 1: Route offer info updates
       if (cleanedText.startsWith("update offer info for")) {
+        logRoute("/update_offer_info", { trigger: "update offer info for", content: text })
         console.log("➡️ Routing to /update_offer_info")
         try {
           const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
@@ -144,6 +146,7 @@ const classifyTags = async (message) => {
     
       // ✅ Step 2: Fallback — route other updates to /execute_command
       if (cleanedText.startsWith("update")) {
+        logRoute("/execute_command", { trigger: "update fallback", content: text })
         console.log("➡️ Routing to /execute_command")
         try {
           const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
@@ -176,6 +179,7 @@ const classifyTags = async (message) => {
       
     // ⬇️ Continue normal /chat flow
     try {
+      logRoute("/chat", { trigger: "fallback", message: text })
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -190,6 +194,12 @@ const classifyTags = async (message) => {
       const assistantReply = { role: 'assistant', content: data.message }
   
       // Log chat history
+      logRoute("/chat-history", {
+      user_id: userId,
+      chat_id: "nox-ui",
+      user_message: text,
+      assistant_reply: data.message
+    })
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

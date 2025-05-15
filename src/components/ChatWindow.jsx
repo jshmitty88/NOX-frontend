@@ -63,5 +63,6 @@ function ChatWindow({ messages }) {
         )
         }
         )
+    }
 
 export default ChatWindow

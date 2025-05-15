@@ -65,6 +65,7 @@ const classifyTags = async (message) => {
       // ————————————————————————————————
       const cleanedText = text.trim().toLowerCase()
       if (cleanedText.startsWith("/search")) {
+        const searchQuery = text.slice(7).trim()
         console.log("🔍 Routing to /search_offer_info")
       
         const searchQuery = text.slice(7).trim()

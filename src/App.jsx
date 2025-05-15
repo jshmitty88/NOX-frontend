@@ -63,9 +63,11 @@ const classifyTags = async (message) => {
       // ————————————————————————————————
       // 🧠 Message Routing Logic Begins
       // ————————————————————————————————
-      const cleanedText = text.trim().toLowerCase()
-      if (cleanedText.startsWith("/search")) {
-        const searchQuery = text.slice(7).trim()
+      const trimmedText = text.trim()
+      const command = trimmedText.split(" ")[0].toLowerCase()
+      
+      if (command === "/search") {
+        const searchQuery = trimmedText.slice(7).trim()
         console.log("🔍 Routing to /search_offer_info")
         try {
           const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {

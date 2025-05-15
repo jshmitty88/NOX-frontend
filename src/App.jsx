@@ -9,7 +9,11 @@ localStorage.setItem('user_id', storedUserId)
 
 function App() {
   const userId = localStorage.getItem('user_id')
-
+  // Log routing decisions to console for easy backend traceability
+  const logRoute = (label, details) => {
+    console.log(`📡 ROUTING: ${label}`, details)
+  }
+  
 const [messages, setMessages] = useState(() => {
   const stored = localStorage.getItem('messages')
   return stored

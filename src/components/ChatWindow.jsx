@@ -25,7 +25,7 @@ function ChatWindow({ messages }) {
             //user bubbles 
             className={`px-4 py-2 text-white break-words whitespace-pre-wrap max-w-[90%] ${
               isUser
-                ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto text-right'
+                ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto text-right min-w-[100px]'
                 : 'text-left'
             }`}
           >

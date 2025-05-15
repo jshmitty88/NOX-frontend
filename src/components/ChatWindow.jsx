@@ -26,10 +26,10 @@ function ChatWindow({ messages }) {
             className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-2`}
           >
             <div
-              className={`px-4 py-2 text-white whitespace-pre-wrap overflow-x-auto break-words ${
+              className={`px-4 py-2 text-white whitespace-pre-wrap overflow-x-auto break-words max-w-[80%] ${
                 isUser
-                  ? 'bg-[#1E1E1E] rounded-2xl shadow-sm max-w-full'
-                  : 'text-left max-w-full'
+                  ? 'bg-[#1E1E1E] rounded-2xl shadow-sm ml-auto'
+                  : 'bg-[#2a2a2a] rounded-2xl mr-auto'
               }`}
             >
               <div className="overflow-x-auto">

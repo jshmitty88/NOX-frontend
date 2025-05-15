@@ -87,6 +87,13 @@ const classifyTags = async (message) => {
             body: JSON.stringify({ query: searchQuery })
           })
           const result = await res.json()
+          if (result.error?.includes("not found")) {
+            setMessages((prev) => [...prev, {
+              role: 'system',
+              content: `⚠️ No matching client found. Make sure this client is in your client list before updating offer info.`
+            }])
+            return
+}
           console.log("✅ /search_offer_info result:", result)
       
           if (result.status === "success" && result.matches.length > 0) {

@@ -130,6 +130,13 @@ const classifyTags = async (message) => {
     
           const result = await res.json()
           console.log("✅ /update_offer_info result:", result)
+          if (result.error?.includes("not found")) {
+            setMessages((prev) => [...prev, {
+              role: 'system',
+              content: `⚠️ No matching client found. Add "${text}" to your client list before updating offer info.`
+            }])
+            return
+          }
     
           setMessages((prev) => [...prev, {
             role: 'system',

@@ -67,7 +67,7 @@ const classifyTags = async (message) => {
       if (cleanedText.startsWith("/search")) {
         console.log("🔍 Routing to /search_offer_info")
       
-        const searchQuery = text.replace("/search", "").trim()
+        const searchQuery = text.slice(7).trim()
         try {
           const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
             method: 'POST',

@@ -16,7 +16,7 @@ const [messages, setMessages] = useState(() => {
     ? JSON.parse(stored)
     : [{ role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }]
 })
-
+// Trigger cache rebuild
 useEffect(() => {
   localStorage.setItem('messages', JSON.stringify(messages))
 }, [messages])

@@ -10,6 +10,14 @@ function MessageInput({ onSend }) {
     onSend(text)
     setText('')
   }
+  
+    // Handle image upload and log selected filename
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    console.log("📸 Selected file:", file.name)
+  }
 
   return (
     <div

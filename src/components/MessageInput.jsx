@@ -66,7 +66,17 @@ function MessageInput({ onSend }) {
   return (
     <div
   className="flex flex-col justify-between px-4 py-2 rounded-[20px] border border-[#00E3FF] bg-[#1E1E1E] gap-2">
-      {/* Text input */}
+       {pendingImageBase64 && (
+        <div className="mb-2">
+          <img
+            src={pendingImageBase64}
+            alt="Preview"
+            className="max-h-48 rounded-lg border border-white/20"
+          />
+          <p className="text-xs text-white/60 mt-1">Attached image (will send with message)</p>
+        </div>
+      )}
+       {/* Text input */}
       <textarea
         rows={2}
         placeholder="Type your message..."

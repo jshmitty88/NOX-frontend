@@ -41,12 +41,7 @@ function MessageInput({ onSend }) {
           type="file"
           accept="image/*"
           className="hidden"
-          onChange={(e) => {
-            const file = e.target.files[0]
-            if (file) {
-              alert('File selected: ' + file.name)
-            }
-          }}
+          onChange={handleImageUpload}
         />
 
         {/* Send Button */}

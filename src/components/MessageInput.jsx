@@ -12,15 +12,40 @@ function MessageInput({ onSend }) {
   }
   
     // Handle image upload and log selected filename
-  const handleImageUpload = async (e) => {
+    const handleImageUpload = async (e) => {
     const file = e.target.files[0]
     if (!file) return
     console.log("📸 Selected file:", file.name)
+  
     const reader = new FileReader()
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       const base64String = reader.result
-      console.log("🧬 Base64 image data:", base64String.slice(0, 50) + "...")
+  
+      try {
+        const res = await fetch("https://web-production-1f17.up.railway.app/analyze_image_base64", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            base64: base64String,
+            filename: file.name
+          })
+        })
+  
+        const data = await res.json()
+        console.log("🧠 GPT Vision response:", data)
+  
+        if (data.result) {
+          onSend(data.result)
+        } else {
+          onSend("⚠️ Image analysis failed.")
+        }
+  
+      } catch (err) {
+        console.error("❌ Upload failed:", err)
+        onSend("⚠️ Failed to process the image. Please try again.")
+      }
     }
+  
     reader.readAsDataURL(file)
   }
 

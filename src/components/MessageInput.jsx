@@ -3,6 +3,7 @@ import { PlusIcon } from '@heroicons/react/24/solid'
 
 function MessageInput({ onSend }) {
   const [text, setText] = useState('')
+  const [pendingImageBase64, setPendingImageBase64] = useState(null)
   const fileInputRef = useRef(null)
 
   const handleSend = () => {

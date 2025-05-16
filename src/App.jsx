@@ -1,198 +1,190 @@
+// App.jsx
+// Main entry point for NOX frontend (image/file upload logic removed and fully functional)
+
 import { useState, useEffect } from 'react'
 import ChatWindow from './components/ChatWindow'
 import MessageInput from './components/MessageInput'
 import './styles/index.css'
 import 'highlight.js/styles/github-dark.css'
 
+// Initialize user_id for session persistence (prompt if not already set)
 const storedUserId = localStorage.getItem('user_id') || prompt("Enter your user ID:")
 localStorage.setItem('user_id', storedUserId)
 
 function App() {
   const userId = localStorage.getItem('user_id')
-  // Log routing decisions to console for easy backend traceability
+
+  // Logs backend routing for debugging
   const logRoute = (label, details) => {
     console.log(`📡 ROUTING: ${label}`, details)
   }
-  
-const [messages, setMessages] = useState(() => {
-  const stored = localStorage.getItem('messages')
-  return stored
-    ? JSON.parse(stored)
-    : [{ role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }]
-})
-// Trigger cache rebuild
-useEffect(() => {
-  localStorage.setItem('messages', JSON.stringify(messages))
-}, [messages])
 
-// GPT-powered dynamic tag classifier
-const classifyTags = async (message) => {
-  try {
-    const res = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    })
-    const data = await res.json()
-    return data?.tags || {
-      tag_platform: "unknown",
-      tag_department: "general",
-      tag_importance: "medium"
-    }
-  } catch (err) {
-    console.error("❌ I Failed to classify tags:", err)
-    return {
-      tag_platform: "unknown",
-      tag_department: "general",
-      tag_importance: "medium"
+  // State for chat messages (loads from localStorage if present)
+  const [messages, setMessages] = useState(() => {
+    const stored = localStorage.getItem('messages')
+    return stored
+      ? JSON.parse(stored)
+      : [{ role: 'assistant', content: 'Welcome to NOX, Netrevenue Operations eXpert! How can I help?' }]
+  })
+
+  // Persist messages to localStorage on every change
+  useEffect(() => {
+    localStorage.setItem('messages', JSON.stringify(messages))
+  }, [messages])
+
+  // GPT-powered dynamic tag classifier for memory/recall logic
+  const classifyTags = async (message) => {
+    try {
+      const res = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      })
+      const data = await res.json()
+      return data?.tags || {
+        tag_platform: "unknown",
+        tag_department: "general",
+        tag_importance: "medium"
+      }
+    } catch (err) {
+      console.error("❌ I Failed to classify tags:", err)
+      return {
+        tag_platform: "unknown",
+        tag_department: "general",
+        tag_importance: "medium"
+      }
     }
   }
-}
 
-    console.log("Deploying updated build...")
-    //begining of send message function 
-    const sendMessage = async (text) => {
-      // ——— Session context and user ID
-      const userId = localStorage.getItem('user_id')
-      console.log("👤 Loaded user_id:", userId)
-      console.log("✉️ Message received:", text)
-    
-      const userMessage = { role: 'user', content: text }
-      const shouldRemember = /remember|update/i.test(text)
-      const updatedMessages = [...messages, userMessage]
-      setMessages(updatedMessages)
-    
-      const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
-    
-      // ————————————————————————————————
-      // 🧠 Message Routing Logic Begins
-      // ————————————————————————————————
-      const trimmedText = text.trim()
-      const command = trimmedText.split(" ")[0].toLowerCase()
-      const cleanedText = trimmedText.toLowerCase()
-      
-      if (command === "/search") {
-        const searchQuery = trimmedText.slice(7).trim()
-        
+  console.log("Deploying updated build...")
+
+  // Sends a user message to backend and updates UI/messages state
+  const sendMessage = async (text) => {
+    const userId = localStorage.getItem('user_id')
+    console.log("👤 Loaded user_id:", userId)
+    console.log("✉️ Message received:", text)
+
+    const userMessage = { role: 'user', content: text }
+    const shouldRemember = /remember|update/i.test(text)
+    const updatedMessages = [...messages, userMessage]
+    setMessages(updatedMessages)
+
+    const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+
+    // --- Routing for special commands ---
+    const trimmedText = text.trim()
+    const command = trimmedText.split(" ")[0].toLowerCase()
+    const cleanedText = trimmedText.toLowerCase()
+
+    // Search offer info route
+    if (command === "/search") {
+      const searchQuery = trimmedText.slice(7).trim()
+      setMessages((prev) => [...prev, {
+        role: 'system',
+        content: `🔍 Routing to /search_offer_info for: _${searchQuery}_`
+      }])
+      logRoute("/search_offer_info", { trigger: "/search", query: searchQuery })
+
+      try {
+        const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: searchQuery })
+        })
+        const result = await res.json()
+        if (result.error?.includes("not found")) {
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: `⚠️ No matching client found. Make sure this client is in your client list before updating offer info.`
+          }])
+          return
+        }
+        console.log("✅ /search_offer_info result:", result)
+
+        if (result.status === "success" && result.matches.length > 0) {
+          const formattedMatches = result.matches.map((m, i) => {
+            return `**${i + 1}. ${m.client_name}**\n${m.offer_updates}\n(Similarity: ${m.similarity.toFixed(2)})`
+          }).join("\n\n")
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: `**Results for:** _${searchQuery}_\n\n${formattedMatches}`
+          }])
+        } else {
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: `No relevant client updates found for: _${searchQuery}_`
+          }])
+        }
+      } catch (err) {
+        console.error("❌ Error calling /search_offer_info:", err)
         setMessages((prev) => [...prev, {
           role: 'system',
-          content: `🔍 Routing to /search_offer_info for: _${searchQuery}_`
+          content: "Error searching offer info. Check backend logs."
         }])
-        logRoute("/search_offer_info", { trigger: "/search", query: searchQuery })
-        
-        try {
-          const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query: searchQuery })
-          })
-          const result = await res.json()
-          if (result.error?.includes("not found")) {
-            setMessages((prev) => [...prev, {
-              role: 'system',
-              content: `⚠️ No matching client found. Make sure this client is in your client list before updating offer info.`
-            }])
-            return
-}
-          console.log("✅ /search_offer_info result:", result)
-      
-          if (result.status === "success" && result.matches.length > 0) {
-            const formattedMatches = result.matches.map((m, i) => {
-              return `**${i + 1}. ${m.client_name}**\n${m.offer_updates}\n(Similarity: ${m.similarity.toFixed(2)})`
-            }).join("\n\n")
-      
-            setMessages((prev) => [...prev, {
-              role: 'system',
-              content: `**Results for:** _${searchQuery}_\n\n${formattedMatches}`
-            }])
-          } else {
-            setMessages((prev) => [...prev, {
-              role: 'system',
-              content: `No relevant client updates found for: _${searchQuery}_`
-            }])
-          }
-      
-        } catch (err) {
-          console.error("❌ Error calling /search_offer_info:", err)
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: "Error searching offer info. Check backend logs."
-          }])
-        }
-      
-        return // ✅ Stop execution so it doesn’t continue to /chat
-}
-      console.log("🧪 cleanedText:", cleanedText)
-    
-      // ✅ Step 1: Route offer info updates
-      if (cleanedText.startsWith("update offer info for")) {
-        logRoute("/update_offer_info", { trigger: "update offer info for", content: text })
-        console.log("➡️ Routing to /update_offer_info")
-        try {
-          const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, user_id: userId })
-          })
-    
-          const result = await res.json()
-          console.log("✅ /update_offer_info result:", result)
-          if (result.error?.includes("not found")) {
-            setMessages((prev) => [...prev, {
-              role: 'system',
-              content: `⚠️ No matching client found. Add "${text}" to your client list before updating offer info.`
-            }])
-            return
-          }
-    
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: `Offer info updated: ${result.success ? "✅" : "❌"}`
-          }])
-        } catch (err) {
-          console.error("❌ Failed to update offer info:", err)
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: 'Error updating offer info. Check logs.'
-          }])
-        }
-        return
       }
-    
-      // ✅ Step 2: Fallback — route other updates to /execute_command
-      if (cleanedText.startsWith("update")) {
-        logRoute("/execute_command", { trigger: "update fallback", content: text })
-        console.log("➡️ Routing to /execute_command")
-        try {
-          const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, user_id: userId })
-          })
-    
-          const result = await execRes.json()
-          console.log("✅ /execute_command result:", result)
-    
+      return
+    }
+
+    // Offer info update route
+    if (cleanedText.startsWith("update offer info for")) {
+      logRoute("/update_offer_info", { trigger: "update offer info for", content: text })
+      console.log("➡️ Routing to /update_offer_info")
+      try {
+        const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, user_id: userId })
+        })
+        const result = await res.json()
+        console.log("✅ /update_offer_info result:", result)
+        if (result.error?.includes("not found")) {
           setMessages((prev) => [...prev, {
             role: 'system',
-            content: `Command result: ${result.status}`
+            content: `⚠️ No matching client found. Add "${text}" to your client list before updating offer info.`
           }])
-        } catch (err) {
-          console.error("❌ Failed to execute command:", err)
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: 'Error executing command. Check backend logs.'
-          }])
+          return
         }
-        return
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: `Offer info updated: ${result.success ? "✅" : "❌"}`
+        }])
+      } catch (err) {
+        console.error("❌ Failed to update offer info:", err)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Error updating offer info. Check logs.'
+        }])
       }
-    
-      // ————————————————————————————————
-      // 🧠 Message Routing Logic Ends
-      // ————————————————————————————————
-    
-      
-    // ⬇️ Continue normal /chat flow
+      return
+    }
+
+    // Fallback update route
+    if (cleanedText.startsWith("update")) {
+      logRoute("/execute_command", { trigger: "update fallback", content: text })
+      console.log("➡️ Routing to /execute_command")
+      try {
+        const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, user_id: userId })
+        })
+        const result = await execRes.json()
+        console.log("✅ /execute_command result:", result)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: `Command result: ${result.status}`
+        }])
+      } catch (err) {
+        console.error("❌ Failed to execute command:", err)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Error executing command. Check backend logs.'
+        }])
+      }
+      return
+    }
+
+    // --- Fallback to /chat route (standard chat logic) ---
     try {
       logRoute("/chat", { trigger: "fallback", message: text })
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
@@ -204,17 +196,16 @@ const classifyTags = async (message) => {
           history: recentHistory
         })
       })
-  
       const data = await response.json()
       const assistantReply = { role: 'assistant', content: data.message }
-  
-      // Log chat history
+
+      // Log chat history for backend
       logRoute("/chat-history", {
-      user_id: userId,
-      chat_id: "nox-ui",
-      user_message: text,
-      assistant_reply: data.message
-    })
+        user_id: userId,
+        chat_id: "nox-ui",
+        user_message: text,
+        assistant_reply: data.message
+      })
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -226,14 +217,13 @@ const classifyTags = async (message) => {
           ]
         })
       })
-  
       setMessages((prev) => {
         const updated = [...prev, assistantReply]
         localStorage.setItem('messages', JSON.stringify(updated))
         return updated
       })
-  
-      // Optional memory logic
+
+      // Optional: trigger memory logic if relevant
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',
@@ -242,7 +232,7 @@ const classifyTags = async (message) => {
         })
         const tagData = await tagRes.json()
         const tags = tagData.tags || {}
-  
+
         await fetch('https://web-production-1f17.up.railway.app/remember', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -257,10 +247,9 @@ const classifyTags = async (message) => {
             source_chat_id: "nox-ui"
           })
         })
-  
         setMessages((prev) => [...prev, { role: 'system', content: 'memory updated (automatically)' }])
       }
-  
+
     } catch (err) {
       console.error("❌ Error in sendMessage:", err)
       setMessages((prev) => [...prev, {
@@ -269,49 +258,50 @@ const classifyTags = async (message) => {
       }])
     }
   }
-  
+
+  // Handler for manual "Reflect" button
   const handleReflect = async () => {
     try {
       const userId = localStorage.getItem('user_id')
-  
-      // Step 1: Get last reflection timestamp
+      // Get last reflection timestamp
       const latestRes = await fetch(`https://web-production-1f17.up.railway.app/reflect/latest?user_id=${userId}`)
       const latestData = await latestRes.json()
       const lastReflectedAt = latestData.timestamp ? new Date(latestData.timestamp) : null
-  
-      // Step 2: Filter messages after that time
+
+      // Filter messages after that time (if available)
       const recentMessages = lastReflectedAt
         ? messages.filter(m => m.createdAt && new Date(m.createdAt) > lastReflectedAt)
         : messages
-  
+
       const chatText = recentMessages.map(m => `${m.role}: ${m.content}`).join('\n')
 
-    // Step 3: Send to /reflect
-const response = await fetch('https://web-production-1f17.up.railway.app/reflect', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    user_id: userId,
-    topic: 'reflection',
-    content: chatText,
-    source_chat_id: "nox-ui"
-  })
-})
+      // Send to /reflect
+      const response = await fetch('https://web-production-1f17.up.railway.app/reflect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          topic: 'reflection',
+          content: chatText,
+          source_chat_id: "nox-ui"
+        })
+      })
 
-    const data = await response.json()
-    setMessages((prev) => [
-      ...prev,
-      { role: 'system', content: `Reflection complete — ${data.entries_stored || 0} entries saved.` }
-    ])
-  } catch (err) {
-    console.error('Reflect failed:', err)
-    setMessages((prev) => [
-      ...prev,
-      { role: 'system', content: 'Reflection failed. Check logs or try again.' }
-    ])
+      const data = await response.json()
+      setMessages((prev) => [
+        ...prev,
+        { role: 'system', content: `Reflection complete — ${data.entries_stored || 0} entries saved.` }
+      ])
+    } catch (err) {
+      console.error('Reflect failed:', err)
+      setMessages((prev) => [
+        ...prev,
+        { role: 'system', content: 'Reflection failed. Check logs or try again.' }
+      ])
+    }
   }
-}
 
+  // --- UI Layout and Rendering ---
   return (
     <div className="flex flex-col h-screen bg-background text-white">
       <div className="flex-1 overflow-auto px-4 pt-6 flex flex-col items-center">
@@ -332,6 +322,7 @@ const response = await fetch('https://web-production-1f17.up.railway.app/reflect
         >
           Reflect
         </button>
+        {/* No image upload button below */}
         <MessageInput onSend={sendMessage} />
       </div>
     </div>

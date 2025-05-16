@@ -21,6 +21,8 @@ function MessageInput({ onSend }) {
     const reader = new FileReader()
     reader.onloadend = async () => {
       const base64String = reader.result
+      setPendingImageBase64(base64String) // store in state
+      console.log("🖼️ Image ready to send with next message")
   
       try {
         const res = await fetch("https://web-production-1f17.up.railway.app/analyze_image_base64", {

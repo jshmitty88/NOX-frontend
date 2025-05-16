@@ -6,10 +6,21 @@ function MessageInput({ onSend }) {
   const [pendingImageBase64, setPendingImageBase64] = useState(null)
   const fileInputRef = useRef(null)
 
+    // Send message (and image if one was uploaded)
   const handleSend = () => {
-    if (text.trim() === '') return
-    onSend(text)
+    if (text.trim() === '' && !pendingImageBase64) return
+  
+    if (pendingImageBase64) {
+      const imageMarkdown = `![uploaded image](${pendingImageBase64})`
+      const fullMessage = `${imageMarkdown}\n\n${text}`
+      onSend(fullMessage)
+    } else {
+      onSend(text)
+    }
+  
+    // Reset input and image
     setText('')
+    setPendingImageBase64(null)
   }
   
     // Handle image upload and log selected filename

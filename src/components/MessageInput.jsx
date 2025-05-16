@@ -11,11 +11,32 @@ function MessageInput({ onSend }) {
     if (text.trim() === '' && !pendingImageBase64) return
   
     if (pendingImageBase64) {
-      const imageMarkdown = `![uploaded image](${pendingImageBase64})`
-      const fullMessage = `${imageMarkdown}\n\n${text}`
-      onSend(fullMessage)
-    } else {
-      onSend(text)
+      try {
+        const res = await fetch("https://web-production-1f17.up.railway.app/analyze_image_base64", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            base64: pendingImageBase64,
+            filename: "user_upload.jpeg"
+          })
+        })
+    
+        const data = await res.json()
+        console.log("🧠 GPT Vision response:", data)
+    
+        const imageMarkdown = `![uploaded image](${pendingImageBase64})`
+        const fullMessage = `${imageMarkdown}\n\n${text || ''}`
+    
+        if (data.result) {
+          onSend(`${fullMessage}\n\n${data.result}`)
+        } else {
+          onSend(`${fullMessage}\n\n⚠️ Image analysis failed.`)
+        }
+    
+      } catch (err) {
+        console.error("❌ Upload failed:", err)
+        onSend("⚠️ Failed to process the image. Please try again.")
+      }
     }
   
     // Reset input and image
@@ -27,13 +48,15 @@ function MessageInput({ onSend }) {
     const handleImageUpload = async (e) => {
     const file = e.target.files[0]
     if (!file) return
-    console.log("📸 Selected file:", file.name)
   
     const reader = new FileReader()
-    reader.onloadend = async () => {
+    reader.onloadend = () => {
       const base64String = reader.result
-      setPendingImageBase64(base64String) // store in state
+      setPendingImageBase64(base64String)
       console.log("🖼️ Image ready to send with next message")
+    }
+    reader.readAsDataURL(file)
+  }
   
       try {
         const res = await fetch("https://web-production-1f17.up.railway.app/analyze_image_base64", {
@@ -60,7 +83,6 @@ function MessageInput({ onSend }) {
       }
     }
   
-    reader.readAsDataURL(file)
   }
 
   return (

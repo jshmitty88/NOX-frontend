@@ -11,6 +11,19 @@ import 'highlight.js/styles/github-dark.css'
 const storedUserId = localStorage.getItem('user_id') || prompt("Enter your user ID:")
 localStorage.setItem('user_id', storedUserId)
 
+
+function sanitizeMessageContent(content) {
+  // Remove base64 images or very large messages
+  if (!content) return '';
+  if (
+    content.includes('data:image') ||   // catches base64 images
+    content.length > 2000               // catches huge messages
+  ) {
+    return '[File upload or large content removed for safety]';
+  }
+  return content;
+}
+
 function App() {
   const userId = localStorage.getItem('user_id')
 

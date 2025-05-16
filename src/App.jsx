@@ -82,7 +82,10 @@ function App() {
     const updatedMessages = [...messages, userMessage]
     setMessages(updatedMessages)
 
-    const recentHistory = updatedMessages.slice(-15).map(m => `${m.role}: ${m.content}`).join('\n')
+    const recentHistory = updatedMessages
+    .slice(-15)
+    .map(m => `${m.role}: ${sanitizeMessageContent(m.content)}`)
+    .join('\n')
 
     // --- Routing for special commands ---
     const trimmedText = text.trim()

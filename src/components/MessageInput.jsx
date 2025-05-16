@@ -15,8 +15,13 @@ function MessageInput({ onSend }) {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0]
     if (!file) return
-
     console.log("📸 Selected file:", file.name)
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const base64String = reader.result
+      console.log("🧬 Base64 image data:", base64String.slice(0, 50) + "...")
+    }
+    reader.readAsDataURL(file)
   }
 
   return (

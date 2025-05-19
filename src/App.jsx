@@ -232,6 +232,14 @@ function App() {
       const messageText = typeof data.message === 'string' && data.message.trim()
         ? data.message
         : "⚠️ No reply received from backend (check logs).";
+        
+        if (!messageText || messageText.startsWith("⚠️")) {
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: "NOX is live, but couldn't find any memory to answer your message. Try rephrasing or asking something more specific."
+          }]);
+          return;
+        }
       
       const assistantReply = {
         role: 'assistant',

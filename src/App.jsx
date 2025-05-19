@@ -54,6 +54,7 @@ function App() {
         body: JSON.stringify({ message })
       })
       const data = await res.json()
+      console.log("🧠 Raw data from /chat response:", data);
       return data?.tags || {
         tag_platform: "unknown",
         tag_department: "general",

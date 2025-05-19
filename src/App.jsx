@@ -219,12 +219,17 @@ function App() {
     
       const data = await response.json();
       console.log("🧠 Raw data from /chat response:", data);
-      console.log("🧠 Assistant reply:", data.message);
-
+      
+      const messageText = typeof data.message === 'string' && data.message.trim()
+        ? data.message
+        : "⚠️ No reply received from backend (check logs).";
+      
       const assistantReply = {
         role: 'assistant',
-        content: data?.message || "⚠️ No reply returned from backend."
+        content: messageText
       };
+      
+console.log("🧠 Assistant reply:", assistantReply.content);
     
       logRoute("/chat-history", {
         user_id: userId,

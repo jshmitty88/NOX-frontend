@@ -284,6 +284,7 @@ function App() {
         content: 'Error reaching backend. Check logs for details.'
       }]);
     }
+  }
 
   // Handler for manual "Reflect" button
   const handleReflect = async () => {

@@ -212,12 +212,21 @@ function App() {
           history: recentHistory
         })
       });
-    
+      
+      const raw = await response.text();
+      console.log("RAW RESPONSE:", raw);
+      
       if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
+        throw new Error(`HTTP error ${response.status}: ${raw}`);
       }
-    
-      const data = await response.json();
+      
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (e) {
+        console.error("Failed to parse backend response as JSON:", e, raw);
+        throw new Error("Invalid JSON from backend");
+      }
       console.log("🧠 Raw data from /chat response:", data);
       
       const messageText = typeof data.message === 'string' && data.message.trim()

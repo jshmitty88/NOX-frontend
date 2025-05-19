@@ -235,7 +235,7 @@ console.log("🧠 Assistant reply:", assistantReply.content);
         user_id: userId,
         chat_id: "nox-ui",
         user_message: text,
-        assistant_reply: data.message
+        assistant_reply: messageText
       });
     
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {
@@ -245,7 +245,7 @@ console.log("🧠 Assistant reply:", assistantReply.content);
           user_id: userId,
           messages: [
             { role: 'user', content: text },
-            { role: 'assistant', content: data.message }
+            { role: 'assistant', content: messageText }
           ]
         })
       });

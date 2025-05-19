@@ -54,7 +54,7 @@ function App() {
         body: JSON.stringify({ message })
       })
       const data = await res.json()
-      console.log("🧠 Raw data from /chat response:", data);
+      
       return data?.tags || {
         tag_platform: "unknown",
         tag_department: "general",
@@ -218,8 +218,9 @@ function App() {
       }
     
       const data = await response.json();
+      console.log("🧠 Raw data from /chat response:", data);
       console.log("🧠 Assistant reply:", data.message);
-    
+
       const assistantReply = {
         role: 'assistant',
         content: data?.message || "⚠️ No reply returned from backend."

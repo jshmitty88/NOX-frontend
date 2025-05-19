@@ -201,46 +201,36 @@ function App() {
     }
 
     // --- Fallback to /chat route (standard chat logic) ---
-    let data;
-      try {
-        const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text,
-            user_id: userId,
-            history: recentHistory
-          })
-        });
-      
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-      
-        data = await response.json();
-        console.log("🧠 Assistant reply:", data.message);
-      
-      } catch (err) {
-        console.error("❌ Failed to reach backend or parse JSON:", err);
-        setMessages((prev) => [...prev, {
-          role: 'system',
-          content: 'Error reaching backend. Check logs for details.'
-        }]);
-        return;
+    try {
+      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          user_id: userId,
+          history: recentHistory
+        })
+      });
+    
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
       }
+    
+      const data = await response.json();
+      console.log("🧠 Assistant reply:", data.message);
+    
       const assistantReply = {
         role: 'assistant',
         content: data?.message || "⚠️ No reply returned from backend."
-      }
-      console.log("🧠 Assistant reply:", data.message)
-
-      // Log chat history for backend
+      };
+    
       logRoute("/chat-history", {
         user_id: userId,
         chat_id: "nox-ui",
         user_message: text,
         assistant_reply: data.message
-      })
+      });
+    
       await fetch('https://web-production-1f17.up.railway.app/chat-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -251,23 +241,24 @@ function App() {
             { role: 'assistant', content: data.message }
           ]
         })
-      })
+      });
+    
       setMessages((prev) => {
-        const updated = [...prev, assistantReply]
-        localStorage.setItem('messages', JSON.stringify(updated))
-        return updated
-      })
-
+        const updated = [...prev, assistantReply];
+        localStorage.setItem('messages', JSON.stringify(updated));
+        return updated;
+      });
+    
       // Optional: trigger memory logic if relevant
       if (shouldRemember) {
         const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: userMessage.content })
-        })
-        const tagData = await tagRes.json()
-        const tags = tagData.tags || {}
-
+        });
+        const tagData = await tagRes.json();
+        const tags = tagData.tags || {};
+    
         await fetch('https://web-production-1f17.up.railway.app/remember', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -281,18 +272,18 @@ function App() {
             tag_importance: tags.tag_importance || "medium",
             source_chat_id: "nox-ui"
           })
-        })
-        setMessages((prev) => [...prev, { role: 'system', content: 'memory updated (automatically)' }])
+        });
+    
+        setMessages((prev) => [...prev, { role: 'system', content: 'memory updated (automatically)' }]);
       }
-
+    
     } catch (err) {
-      console.error("❌ Error in sendMessage:", err)
+      console.error("❌ Error in sendMessage:", err);
       setMessages((prev) => [...prev, {
         role: 'system',
         content: 'Error reaching backend. Check logs for details.'
-      }])
+      }]);
     }
-  }
 
   // Handler for manual "Reflect" button
   const handleReflect = async () => {

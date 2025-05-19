@@ -201,18 +201,33 @@ function App() {
     }
 
     // --- Fallback to /chat route (standard chat logic) ---
-    try {
-      logRoute("/chat", { trigger: "fallback", message: text })
-      const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          user_id: userId,
-          history: recentHistory
-        })
-      })
-      const data = await response.json()
+    let data;
+      try {
+        const response = await fetch('https://web-production-1f17.up.railway.app/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            user_id: userId,
+            history: recentHistory
+          })
+        });
+      
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+      
+        data = await response.json();
+        console.log("🧠 Assistant reply:", data.message);
+      
+      } catch (err) {
+        console.error("❌ Failed to reach backend or parse JSON:", err);
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Error reaching backend. Check logs for details.'
+        }]);
+        return;
+      }
       const assistantReply = {
         role: 'assistant',
         content: data?.message || "⚠️ No reply returned from backend."

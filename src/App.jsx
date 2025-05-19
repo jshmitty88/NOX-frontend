@@ -213,7 +213,11 @@ function App() {
         })
       })
       const data = await response.json()
-      const assistantReply = { role: 'assistant', content: data.message }
+      const assistantReply = {
+        role: 'assistant',
+        content: data?.message || "⚠️ No reply returned from backend."
+      }
+      console.log("🧠 Assistant reply:", data.message)
 
       // Log chat history for backend
       logRoute("/chat-history", {

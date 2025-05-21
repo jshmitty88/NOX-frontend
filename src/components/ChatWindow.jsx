@@ -46,7 +46,7 @@ function ChatWindow({ messages }) {
                       </ul>
                     ),
                     ol: ({ children }) => (
-                      <ol className="list-decimal list-inside space-y-2 text-sm text-white pl-0">
+                      <ol className="list-disc pl-5 space-y-1 text-md text-white">
                         {children}
                       </ol>
                     ),

@@ -124,7 +124,11 @@ function App() {
         }
         console.log("✅ /search_offer_info result:", result)
 
-        if (result.status === "success" && result.summary) {
+        console.log("✅ Search result object:", result)
+        console.log("✅ result.status:", result.status)
+        console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
+      
+         if (result.status === "success" && result.summary) {
           setMessages((prev) => [...prev, {
             role: 'system',
             content: `**Results for:** _${searchQuery}_\n\n${result.summary}`

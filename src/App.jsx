@@ -152,7 +152,7 @@ function App() {
     }
 
     // Offer info update route
-    if (cleanedText.startsWith("update offer info for")) {
+    if (cleanedText.startsWith("update ")) {
       logRoute("/update_offer_info", { trigger: "update offer info for", content: text })
       console.log("➡️ Routing to /update_offer_info")
       try {
@@ -184,31 +184,6 @@ function App() {
       return
     }
 
-    // Fallback update route
-    if (cleanedText.startsWith("update")) {
-      logRoute("/execute_command", { trigger: "update fallback", content: text })
-      console.log("➡️ Routing to /execute_command")
-      try {
-        const execRes = await fetch('https://web-production-1f17.up.railway.app/execute_command', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, user_id: userId })
-        })
-        const result = await execRes.json()
-        console.log("✅ /execute_command result:", result)
-        setMessages((prev) => [...prev, {
-          role: 'system',
-          content: `Command result: ${result.status}`
-        }])
-      } catch (err) {
-        console.error("❌ Failed to execute command:", err)
-        setMessages((prev) => [...prev, {
-          role: 'system',
-          content: 'Error executing command. Check backend logs.'
-        }])
-      }
-      return
-    }
 
     // --- Fallback to /chat route (standard chat logic) ---
     try {

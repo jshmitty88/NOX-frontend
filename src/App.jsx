@@ -111,6 +111,9 @@ function App() {
         
         console.log("🌐 Raw /search response object:", res);
         const result = await res.json()
+        if (!result || !result.summary) {
+          console.error("❌ Search route returned incomplete result:", result)
+        }
         console.log("🧠 result.summary:", result.summary);
         if (result.error?.includes("not found")) {
           setMessages((prev) => [...prev, {

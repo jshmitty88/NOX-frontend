@@ -128,19 +128,15 @@ function App() {
         console.log("✅ result.status:", result.status)
         console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
       
-         if (result.status === "success" && result.summary) {
+         if (result.status === "success" && result.matches?.length > 0) {
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: `**Matches for:** _${searchQuery}_\n\n${result.matches.join("\n\n")}`
+          }])
+        } else if (result.status === "success" && result.summary) {
           setMessages((prev) => [...prev, {
             role: 'system',
             content: `**Results for:** _${searchQuery}_\n\n${result.summary}`
-          }])
-        } else if (result.status === "success" && result.matches?.length > 0) {
-          const formattedMatches = result.matches.map((m, i) => {
-            return `**${i + 1}. ${m.client_name}**\n${m.offer_updates}\n(Similarity: ${m.similarity.toFixed(2)})`
-          }).join("\n\n")
-        
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: `**Matches for:** _${searchQuery}_\n\n${formattedMatches}`
           }])
         } else {
           setMessages((prev) => [...prev, {

@@ -109,6 +109,7 @@ function App() {
           body: JSON.stringify({ query: searchQuery })
         })
         const result = await res.json()
+        console.log("🧠 result.summary:", result.summary);
         if (result.error?.includes("not found")) {
           setMessages((prev) => [...prev, {
             role: 'system',

@@ -108,6 +108,8 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: searchQuery })
         })
+        
+        console.log("🌐 Raw /search response object:", res);
         const result = await res.json()
         console.log("🧠 result.summary:", result.summary);
         if (result.error?.includes("not found")) {

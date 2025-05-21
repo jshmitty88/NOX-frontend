@@ -37,37 +37,34 @@ function ChatWindow({ messages }) {
               {/* Markdown renderer */}
               <div className="overflow-x-auto">
                 <ReactMarkdown
-                  className="max-w-full text-white text-base font-normal leading-relaxed"
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    ul: ({ children }) => (
-                      <ul style={{ margin: 0, padding: 0 }} className="list-disc pl-5 text-base font-normal">
-                        {children}
-                      </ul>
-                    ),
-                    ol: ({ children }) => (
-                      <ol style={{ margin: 0, padding: 0 }} className="list-decimal pl-5 text-base font-normal">
-                        {children}
-                      </ol>
-                    ),
-                    li: ({ children }) => (
-                      <li style={{ margin: 0, padding: 0, lineHeight: '1.5' }} className="mb-0">
-                        {children}
-                      </li>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 style={{ margin: 0, padding: 0, fontWeight: 700 }}>{children}</h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 style={{ margin: 0, padding: 0, fontWeight: 700 }}>{children}</h3>
-                    ),
-                    p: ({ children }) => (
-                      <p style={{ margin: 0, padding: 0, lineHeight: '1.5' }}>{children}</p>
-                    )
-                  }}
-                >
-                  {msg.content}
-                </ReactMarkdown>
+                   className="max-w-full text-white text-base font-normal leading-relaxed"
+                    rehypePlugins={[rehypeHighlight]}
+                    components={{
+                      ul: ({ children }) => (
+                        <ul style={{ margin: 0, padding: 0, listStylePosition: 'outside' }} className="list-disc pl-5">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol style={{ margin: 0, padding: 0, listStylePosition: 'outside' }} className="list-decimal pl-5">{children}</ol>
+                      ),
+                      li: ({ children }) => (
+                        <li style={{ margin: 0, padding: 0, lineHeight: 1.5 }}>{children}</li>
+                      ),
+                      h1: ({ children }) => (
+                        <h1 style={{ margin: 0, padding: 0, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.2 }}>{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 style={{ margin: 0, padding: 0, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.25 }}>{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 style={{ margin: 0, padding: 0, fontWeight: 700, fontSize: '1.125rem', lineHeight: 1.3 }}>{children}</h3>
+                      ),
+                      p: ({ children }) => (
+                        <p style={{ margin: 0, padding: 0, lineHeight: 1.5 }}>{children}</p>
+                      ),
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
               </div>
             </div>
           </div>

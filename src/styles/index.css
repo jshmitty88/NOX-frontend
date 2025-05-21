@@ -6,8 +6,8 @@ body {
   @apply bg-background text-white;
 }
 
-/* Code block styling for markdown */
-.prose pre {
+/* Code block styling for markdown (optional: keep if you use code blocks in chat) */
+.chat-markdown pre {
   background-color: #1e293b; /* slate-800 */
   padding: 1rem;
   border-radius: 0.5rem;
@@ -17,7 +17,7 @@ body {
 }
 
 /* ChatGPT-style: wrap code cleanly on mobile */
-.prose pre code {
+.chat-markdown pre code {
   white-space: pre-wrap;       /* Allow line wrapping */
   word-break: break-word;      /* Break very long strings (e.g. URLs, tokens) */
   overflow-wrap: break-word;   /* Prevent horizontal overflow */
@@ -25,61 +25,35 @@ body {
   display: block;              /* Force line-based layout */
 }
 
-.prose code {
+.chat-markdown code {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
 }
 
-.prose h1, .prose h2, .prose h3, .prose h4,
-.prose ul, .prose ol,
-.prose li, .prose p {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Optional: Add just a little space below headings if desired */
-.prose h2, .prose h3, .prose h4 {
-  margin-bottom: 0.25em !important;
-}
-
-/* Make sure lists and paragraphs are the same line height */
-.prose, .prose * {
+/* Brutal reset for chat markdown elements (removes all default margins/paddings) */
+.chat-markdown * {
+  margin: 0 !important;
+  padding: 0 !important;
   line-height: 1.5 !important;
+  font-family: 'Inter', Arial, sans-serif !important;
 }
 
-.prose h2, .prose h3, .prose h4 {
-  margin-top: 0.5em !important;
-  margin-bottom: 0.5em !important;
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  font-weight: 700 !important;
 }
 
-.prose ul, .prose ol {
-  margin-top: 0.25em !important;
-  margin-bottom: 0.25em !important;
+.chat-markdown ul, .chat-markdown ol {
+  margin-left: 1.25em !important;
+  padding-left: 0 !important;
+  list-style-position: outside !important;
 }
 
-.prose li {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
-
-.prose :is(h1, h2, h3, h4, ul, ol, li, p) {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+.chat-markdown li {
+  margin: 0 !important;
+  padding: 0 !important;
   line-height: 1.5 !important;
-}
-
-.prose :is(h2, h3, h4) {
-  margin-bottom: 0.25em !important;
-}
-
-.prose :is(h1, h2, h3, h4, ul, ol, li, p) {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
 }

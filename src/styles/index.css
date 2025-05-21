@@ -31,15 +31,17 @@ body {
   border-radius: 0.25rem;
 }
 
-/* Improve ChatGPT-style list formatting */
-.prose ul {
-  list-style-type: disc;
-  list-style-position: inside;
-  padding-left: 0;
-  margin-left: 0;
+.prose h2, .prose h3, .prose h4 {
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.prose ul, .prose ol {
+  margin-top: 0.25em !important;
+  margin-bottom: 0.25em !important;
 }
 
 .prose li {
-  margin-bottom: 0.25rem;
-  line-height: 1.6;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }

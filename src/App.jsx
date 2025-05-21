@@ -127,9 +127,9 @@ function App() {
         if (result.status === "success" && result.summary) {
           setMessages((prev) => [...prev, {
             role: 'system',
-            content: `**Summary for:** _${searchQuery}_\n\n${result.summary}`
+            content: `**Results for:** _${searchQuery}_\n\n${result.summary}`
           }])
-        } else if (result.matches?.length > 0) {
+        } else if (result.status === "success" && result.matches?.length > 0) {
           const formattedMatches = result.matches.map((m, i) => {
             return `**${i + 1}. ${m.client_name}**\n${m.offer_updates}\n(Similarity: ${m.similarity.toFixed(2)})`
           }).join("\n\n")
@@ -141,9 +141,9 @@ function App() {
         } else {
           setMessages((prev) => [...prev, {
             role: 'system',
-            content: `No relevant client updates found for: _${searchQuery}_`
+            content: `No relevant updates found for: _${searchQuery}_`
           }])
-}
+        }
       } catch (err) {
         console.error("❌ Error calling /search_offer_info:", err)
         setMessages((prev) => [...prev, {

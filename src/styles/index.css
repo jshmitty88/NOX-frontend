@@ -31,6 +31,25 @@ body {
   border-radius: 0.25rem;
 }
 
+.prose h1, .prose h2, .prose h3, .prose h4,
+.prose ul, .prose ol,
+.prose li, .prose p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Optional: Add just a little space below headings if desired */
+.prose h2, .prose h3, .prose h4 {
+  margin-bottom: 0.25em !important;
+}
+
+/* Make sure lists and paragraphs are the same line height */
+.prose, .prose * {
+  line-height: 1.5 !important;
+}
+
 .prose h2, .prose h3, .prose h4 {
   margin-top: 0.5em !important;
   margin-bottom: 0.5em !important;

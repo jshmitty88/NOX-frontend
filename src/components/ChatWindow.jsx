@@ -37,25 +37,25 @@ function ChatWindow({ messages }) {
               {/* Markdown renderer */}
               <div className="overflow-x-auto">
                 <ReactMarkdown
-                  className="chat-markdown max-w-full text-white text-base font-normal leading-relaxed"
-                   className="max-w-full text-white text-base font-normal leading-relaxed"
+                    className="max-w-full text-white text-[15px] font-normal leading-[1.6]"
                     rehypePlugins={[rehypeHighlight]}
-                    
-                      components={{
+                    components={{
                       ul: ({ children }) => (
-                        <ul className="list-disc pl-4 space-y-[0.1rem] text-white text-[15px] leading-[1.5]">
+                        <ul className="list-disc pl-4 space-y-1 text-white">
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol className="list-decimal pl-4 space-y-[0.1rem] text-white text-[15px] leading-[1.5]">
+                        <ol className="list-decimal pl-4 space-y-1 text-white">
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li className="ml-1 text-[15px] leading-[.5]">{children}</li>
+                        <li className="ml-1 text-[15px] leading-[1.6]">{children}</li>
                       ),
-                      
+                      p: ({ children }) => (
+                        <p className="mb-1">{children}</p>
+                      ),
                       h1: ({ children }) => (
                         <h1 style={{ margin: 0, padding: 0, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.2 }}>{children}</h1>
                       ),

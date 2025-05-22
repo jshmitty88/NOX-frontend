@@ -43,17 +43,17 @@ function ChatWindow({ messages }) {
                     
                       components={{
                       ul: ({ children }) => (
-                        <ul className="list-disc pl-4 space-y-[0.25rem] text-white text-[15px] leading-[1.5]">
+                        <ul className="list-disc pl-4 space-y-[0.1rem] text-white text-[15px] leading-[1.5]">
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol className="list-decimal pl-4 space-y-[0.25rem] text-white text-[15px] leading-[1.5]">
+                        <ol className="list-decimal pl-4 space-y-[0.1rem] text-white text-[15px] leading-[1.5]">
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li className="ml-1 text-[15px] leading-[1.5]">{children}</li>
+                        <li className="ml-1 text-[15px] leading-[.5]">{children}</li>
                       ),
                       
                       h1: ({ children }) => (

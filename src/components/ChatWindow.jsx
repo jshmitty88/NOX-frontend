@@ -42,33 +42,38 @@ function ChatWindow({ messages }) {
                     
                       components={{
                       ul: ({ children }) => (
-                        <ul style={{
-                          paddingLeft: '1.25rem',
-                          marginTop: '0.5rem',
-                          marginBottom: '0.5rem',
-                          listStyleType: 'disc',
-                          listStylePosition: 'inside'
-                        }}>
+                        <ul
+                          style={{
+                            paddingLeft: 0,
+                            listStyleType: 'disc',
+                            listStylePosition: 'inside',
+                            marginBottom: '0.5rem'
+                          }}
+                        >
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol style={{
-                          paddingLeft: '1.25rem',
-                          marginTop: '0.5rem',
-                          marginBottom: '0.5rem',
-                          listStyleType: 'decimal',
-                          listStylePosition: 'inside'
-                        }}>
+                        <ol
+                          style={{
+                            paddingLeft: 0,
+                            listStyleType: 'decimal',
+                            listStylePosition: 'inside',
+                            marginBottom: '0.5rem'
+                          }}
+                        >
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li style={{
-                          fontSize: '15px',
-                          lineHeight: '1.5',
-                          marginBottom: '0.25rem'
-                        }}>
+                        <li
+                          style={{
+                            marginBottom: '0.25rem',
+                            textIndent: '-0.5rem',
+                            paddingLeft: '0.5rem',
+                            lineHeight: '1.5'
+                          }}
+                        >
                           {children}
                         </li>
                       ),

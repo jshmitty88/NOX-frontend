@@ -1,5 +1,19 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: 
+    ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+    './public/index.html',
+
+  // ✅ Add this
+  safelist: [
+    'text-[15px]',
+    'leading-[1.4]',
+    'leading-[1.5]',
+    'space-y-[0.2rem]',
+    'mb-[0.4rem]',
+    'list-inside',
+    'pl-4'
+  ],
+
   theme: {
     extend: {
       colors: {
@@ -10,5 +24,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography')],
 }

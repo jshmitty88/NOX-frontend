@@ -1,9 +1,10 @@
 module.exports = {
-  content: 
-    ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-    './public/index.html',
+  content: [
+    './index.html',
+    './public/index.html',          // ✅ put this here
+    './src/**/*.{js,ts,jsx,tsx}'
+  ],
 
-  // ✅ Add this
   safelist: [
     'text-[15px]',
     'leading-[1.4]',
@@ -21,8 +22,9 @@ module.exports = {
         userBubble: 'rgba(255,255,255,0.2)',
         noxBlue: '#00E3FF',
         white: '#ffffff'
-      },
-    },
+      }
+    }
   },
-  plugins: [require('@tailwindcss/typography')],
+
+  plugins: [require('@tailwindcss/typography')]
 }

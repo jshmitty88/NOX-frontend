@@ -42,17 +42,35 @@ function ChatWindow({ messages }) {
                     
                       components={{
                       ul: ({ children }) => (
-                        <ul className="list-disc list-inside text-white space-y-1 text-[15px] leading-[1.5]">
+                        <ul style={{
+                          paddingLeft: '1.25rem',
+                          marginTop: '0.5rem',
+                          marginBottom: '0.5rem',
+                          listStyleType: 'disc',
+                          listStylePosition: 'inside'
+                        }}>
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol className="list-decimal list-inside text-white space-y-1 text-[15px] leading-[1.5]">
+                        <ol style={{
+                          paddingLeft: '1.25rem',
+                          marginTop: '0.5rem',
+                          marginBottom: '0.5rem',
+                          listStyleType: 'decimal',
+                          listStylePosition: 'inside'
+                        }}>
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li className="text-white leading-[1.5] text-[15px]">{children}</li>
+                        <li style={{
+                          fontSize: '15px',
+                          lineHeight: '1.5',
+                          marginBottom: '0.25rem'
+                        }}>
+                          {children}
+                        </li>
                       ),
                       p: ({ children }) => (
                         <p className="text-white text-[15px] mb-[0.4rem]">{children}</p>

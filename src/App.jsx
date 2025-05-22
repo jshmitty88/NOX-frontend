@@ -74,7 +74,7 @@ function App() {
 
   // Sends a user message to backend and updates UI/messages state
   const sendMessage = async (text) => {
-    const userId = localStorage.getItem('user_id')
+    
     console.log("👤 Loaded user_id:", userId)
     console.log("✉️ Message received:", text)
 

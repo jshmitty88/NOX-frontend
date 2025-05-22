@@ -245,7 +245,7 @@ console.log("🧠 Assistant reply:", assistantReply.content);
       }]);
     }
   }
-}
+
   // Handler for manual "Reflect" button
   const handleReflect = async () => {
     try {

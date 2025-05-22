@@ -244,6 +244,7 @@ console.log("🧠 Assistant reply:", assistantReply.content);
         content: 'Error reaching backend. Check logs for details.'
       }]);
     }
+    return
   }
 
   // Handler for manual "Reflect" button

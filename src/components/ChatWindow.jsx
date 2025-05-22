@@ -40,7 +40,7 @@ function ChatWindow({ messages }) {
                   className="chat-markdown max-w-full text-white text-base font-normal leading-relaxed"
                    className="max-w-full text-white text-base font-normal leading-relaxed"
                     rehypePlugins={[rehypeHighlight]}
-                    components={{
+                    
                       components={{
                       ul: ({ children }) => (
                         <ul className="list-disc pl-4 space-y-[0.25rem] text-white text-[15px] leading-[1.5]">

@@ -39,26 +39,25 @@ function ChatWindow({ messages }) {
                 <ReactMarkdown
                     className="max-w-full text-white text-[15px] font-normal leading-[1.6]"
                     rehypePlugins={[rehypeHighlight]}
-                    components={{
+                    
+                      components={{
                       ul: ({ children }) => (
-                        <ul className="list-disc pl-4 text-white space-y-[0.2rem] leading-tight">
+                        <ul className="list-disc list-inside text-white space-y-1 text-[15px] leading-[1.5]">
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol className="list-decimal pl-4 text-white space-y-[0.2rem] leading-tight">
+                        <ol className="list-decimal list-inside text-white space-y-1 text-[15px] leading-[1.5]">
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li className="ml-1 leading-[1.4] mb-[0.2rem]">{children}</li>
+                        <li className="text-white leading-[1.5] text-[15px]">{children}</li>
                       ),
                       p: ({ children }) => (
-                        <p className="mb-1 leading-[1.5]">{children}</p>
+                        <p className="text-white text-[15px] mb-[0.4rem]">{children}</p>
                       ),
-                      p: ({ children }) => (
-                        <p className="mb-1">{children}</p>
-                      ),
+                    
                       h1: ({ children }) => (
                         <h1 style={{ margin: 0, padding: 0, fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.2 }}>{children}</h1>
                       ),

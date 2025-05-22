@@ -41,17 +41,20 @@ function ChatWindow({ messages }) {
                     rehypePlugins={[rehypeHighlight]}
                     components={{
                       ul: ({ children }) => (
-                        <ul className="list-disc pl-4 space-y-1 text-white">
+                        <ul className="list-disc pl-4 text-white space-y-[0.2rem] leading-tight">
                           {children}
                         </ul>
                       ),
                       ol: ({ children }) => (
-                        <ol className="list-decimal pl-4 space-y-1 text-white">
+                        <ol className="list-decimal pl-4 text-white space-y-[0.2rem] leading-tight">
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li className="ml-1 text-[15px] leading-[1.6]">{children}</li>
+                        <li className="ml-1 leading-[1.4] mb-[0.2rem]">{children}</li>
+                      ),
+                      p: ({ children }) => (
+                        <p className="mb-1 leading-[1.5]">{children}</p>
                       ),
                       p: ({ children }) => (
                         <p className="mb-1">{children}</p>

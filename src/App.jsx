@@ -135,7 +135,7 @@ function App() {
               role: 'system',
               content: `No relevant updates found for: _${searchQuery}_`
             }])
-          }
+          }}
         } catch (err) {
           console.error("❌ Error calling /search_offer_info:", err)
           setMessages((prev) => [...prev, {

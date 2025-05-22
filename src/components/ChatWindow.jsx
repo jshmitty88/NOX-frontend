@@ -37,7 +37,7 @@ function ChatWindow({ messages }) {
               {/* Markdown renderer */}
               <div className="overflow-x-auto">
                 <ReactMarkdown
-                    className="max-w-full text-white text-[15px] font-normal leading-[1.6]"
+                    className="nox-markdown"
                     rehypePlugins={[rehypeHighlight]}
                     
                       components={{

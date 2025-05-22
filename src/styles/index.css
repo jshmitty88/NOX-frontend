@@ -6,6 +6,27 @@ body {
   @apply bg-background text-white;
 }
 
+.nox-markdown ul,
+.nox-markdown ol {
+  list-style-position: inside !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.nox-markdown li {
+  margin-bottom: 0.25rem !important;
+  line-height: 1.6 !important;
+  text-indent: -1rem !important;
+  padding-left: 1rem !important;
+}
+
+.nox-markdown p {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.6 !important;
+}
+
 /* Code block styling for markdown (optional: keep if you use code blocks in chat) */
 .chat-markdown pre {
   background-color: #1e293b; /* slate-800 */

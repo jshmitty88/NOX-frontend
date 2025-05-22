@@ -101,7 +101,7 @@ function App() {
         content: `🔍 Routing to /search_offer_info for: _${searchQuery}_`
       }])
       logRoute("/search_offer_info", { trigger: "/search", query: searchQuery })
-
+    
       try {
         const res = await fetch('https://web-production-1f17.up.railway.app/search_offer_info', {
           method: 'POST',
@@ -109,12 +109,9 @@ function App() {
           body: JSON.stringify({ query: searchQuery })
         })
         
-        console.log("🌐 Raw /search response object:", res);
         const result = await res.json()
-        if (!result || !result.summary) {
-          console.error("❌ Search route returned incomplete result:", result)
-        }
-        console.log("🧠 result.summary:", result.summary);
+        console.log("✅ /search_offer_info result:", result)
+        
         if (result.error?.includes("not found")) {
           setMessages((prev) => [...prev, {
             role: 'system',
@@ -122,43 +119,18 @@ function App() {
           }])
           return
         }
-        console.log("✅ /search_offer_info result:", result)
-
-        console.log("✅ Search result object:", result)
-        console.log("✅ result.status:", result.status)
-        console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
-      
         
-    
-
-    // Offer info update route
-    if (cleanedText.startsWith("update ")) {
-      logRoute("/update_offer_info", { trigger: "update offer info for", content: text })
-      console.log("➡️ Routing to /update_offer_info")
-      try {
-        const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, user_id: userId })
-        })
-        const result = await res.json()
-        console.log("✅ /update_offer_info result:", result)
-        if (result.error?.includes("not found")) {
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: `⚠️ No matching client found. Add "${text}" to your client list before updating offer info.`
-          }])
-          return
-        }
+        // Handle successful search result
         setMessages((prev) => [...prev, {
-          role: 'system',
-          content: `Offer info updated: ${result.success ? "✅" : "❌"}`
+          role: 'assistant',
+          content: result.summary || 'Search completed successfully.'
         }])
+        
       } catch (err) {
-        console.error("❌ Failed to update offer info:", err)
+        console.error("❌ Failed to search offer info:", err)
         setMessages((prev) => [...prev, {
           role: 'system',
-          content: 'Error updating offer info. Check logs.'
+          content: 'Error searching offer info. Check logs.'
         }])
       }
       return

@@ -128,17 +128,8 @@ function App() {
         console.log("✅ result.status:", result.status)
         console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
       
-         if (result.status === "success" && result.matches?.length > 0) {
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: `**Matches for:** _${searchQuery}_\n\n${result.matches.join("\n\n")}`
-          }])
-        } else if (result.status === "success" && result.summary) {
-          setMessages((prev) => [...prev, {
-            role: 'system',
-            content: `**Results for:** _${searchQuery}_\n\n${result.summary}`
-          }])
-        } else {
+        
+        if {
           setMessages((prev) => [...prev, {
             role: 'system',
             content: `No relevant updates found for: _${searchQuery}_`

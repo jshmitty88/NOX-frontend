@@ -56,10 +56,10 @@ function ChatWindow({ messages }) {
                       ol: ({ children }) => (
                         <ol
                           style={{
-                            paddingLeft: 0,
-                            listStyleType: 'decimal',
-                            listStylePosition: 'inside',
-                            marginBottom: '0.5rem'
+                            paddingLeft: '1.25rem',           // Standard left padding
+                            listStyleType: 'decimal',         // Numbered list
+                            listStylePosition: 'outside',     // Fixes number alignment
+                            marginBottom: '0.25rem',          // Subtle spacing between list blocks
                           }}
                         >
                           {children}

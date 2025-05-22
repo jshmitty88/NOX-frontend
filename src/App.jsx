@@ -129,8 +129,7 @@ function App() {
         console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
       
         
-        if {
-          setMessages((prev) => [...prev, {
+        if (setMessages((prev) => [...prev, {
             role: 'system',
             content: `No relevant updates found for: _${searchQuery}_`
           }])

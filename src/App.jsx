@@ -191,17 +191,22 @@ console.log("🧠 Assistant reply:", assistantReply.content);
         assistant_reply: messageText
       });
     
-      await fetch('https://web-production-1f17.up.railway.app/chat-history', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          messages: [
-            { role: 'user', content: text },
-            { role: 'assistant', content: messageText }
-          ]
-        })
-      });
+      try {
+        await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            messages: [
+              { role: 'user', content: text },
+              { role: 'assistant', content: messageText }
+            ]
+          })
+        });
+      } catch (err) {
+        console.error("❌ Failed to save chat history:", err);
+        // Don't block the user experience, just log the error
+      }
     
       setMessages((prev) => {
         const updated = [...prev, assistantReply];

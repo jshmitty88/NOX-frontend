@@ -129,20 +129,20 @@ function App() {
         console.log("✅ result.summary:", typeof result.summary, result.summary?.length)
       
         
-        try {
-          if (someCondition) {
-            setMessages((prev) => [...prev, {
-              role: 'system',
-              content: `No relevant updates found for: _${searchQuery}_`
-            }])
-          }
-        } catch (err) {
-          console.error("❌ Error calling /search_offer_info:", err)
+      try {
+        if (someCondition) {
           setMessages((prev) => [...prev, {
             role: 'system',
-            content: "Error searching offer info. Check backend logs."
+            content: `No relevant updates found for: _${searchQuery}_`
           }])
-        }
+         }
+      } catch (err) {
+        console.error("❌ Error calling /search_offer_info:", err)
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: "Error searching offer info. Check backend logs."
+        }])
+      }
 
     // Offer info update route
     if (cleanedText.startsWith("update ")) {

@@ -139,13 +139,8 @@ function App() {
 
     // --- Route to /creative_intent if user is asking for marketing/sales copy ---
     if (
-      cleanedText.includes("landing page") ||
-      cleanedText.includes("email") ||
-      cleanedText.includes("vsl") ||
-      cleanedText.includes("ad copy") ||
-      cleanedText.includes("revise") ||
-      cleanedText.includes("write")
-    ) {
+      /revise|rewrite|resend|remove|edit|write|landing page|email|vsl|ad copy/i.test(text)
+    ) 
       try {
         const response = await fetch('https://web-production-1f17.up.railway.app/creative_intent', {
           method: 'POST',

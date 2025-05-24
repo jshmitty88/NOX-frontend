@@ -137,6 +137,53 @@ function App() {
     }
 
 
+    // --- Route to /creative_intent if user is asking for marketing/sales copy ---
+    if (
+      cleanedText.includes("landing page") ||
+      cleanedText.includes("email") ||
+      cleanedText.includes("vsl") ||
+      cleanedText.includes("ad copy") ||
+      cleanedText.includes("revise") ||
+      cleanedText.includes("write")
+    ) {
+      try {
+        const response = await fetch('https://web-production-1f17.up.railway.app/creative_intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            user_id: userId,
+            history: recentHistory
+          })
+        });
+    
+        const data = await response.json();
+        const messageText = typeof data.message === 'string' && data.message.trim()
+          ? data.message
+          : "⚠️ No creative generated (check logs).";
+    
+        const assistantReply = {
+          role: 'assistant',
+          content: messageText
+        };
+    
+        setMessages((prev) => {
+          const updated = [...prev, assistantReply];
+          localStorage.setItem('messages', JSON.stringify(updated));
+          return updated;
+        });
+    
+        return;
+      } catch (err) {
+        console.error("❌ Failed to call /creative_intent:", err);
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Error generating creative. Check logs for details.'
+        }]);
+        return;
+      }
+    }
+
     // --- Fallback to /chat route (standard chat logic) ---
     try {
       const response = await fetch('https://web-production-1f17.up.railway.app/chat', {

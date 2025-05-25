@@ -167,6 +167,13 @@ function App() {
           localStorage.setItem('messages', JSON.stringify(updated));
           return updated;
         });
+        
+        // Add confirmation prompt
+        setMessages((prev) => [...prev, {
+          role: 'system',
+          content: 'Would you like to save this to offer info or generate a Google Doc?',
+          actions: ['Save to Offer Info', 'Generate Google Doc', 'No Thanks']
+        }]);
         // Log to chat-history table
         try {
           await fetch('https://web-production-1f17.up.railway.app/chat-history', {

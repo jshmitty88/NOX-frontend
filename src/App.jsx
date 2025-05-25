@@ -80,7 +80,7 @@ function App() {
 
     const userMessage = { role: 'user', content: text }
     const shouldRemember = /\bremember\b/i.test(text) // only triggers for “remember”  
-    const isOfferUpdate = /^update\s+\w+:/i.test(text) // matches “update BHA: something”
+    const isOfferUpdate = /^update\s+\w+/i.test(text)
     const updatedMessages = [...messages, userMessage]
     setMessages(updatedMessages)
 

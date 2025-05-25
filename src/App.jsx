@@ -137,7 +137,35 @@ function App() {
       return
     }
 
+    // -- Routes to /offer_info_update if user says "update [client name]: "
+    if (isOfferUpdate) {
+      try {
+        const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            message: text
+          })
+        });
+    
+        const data = await res.json();
+        setMessages(prev => [...prev, {
+          role: 'system',
+          content: data.message || "✅ Offer info updated successfully."
+        }]);
+      } catch (err) {
+        console.error("❌ Failed to update offer info:", err);
+        setMessages(prev => [...prev, {
+          role: 'system',
+          content: '❌ Failed to update offer info.'
+        }]);
+      }
+    
+      return; // prevent fallback to /chat
+  }
 
+ 
     // --- Route to /creative_intent if user is asking for marketing/sales copy ---
     if (
       /revise|rewrite|resend|remove|edit|write|landing page|email|vsl|ad copy/i.test(text)
@@ -230,32 +258,7 @@ function App() {
       }
     }
 
-    if (isOfferUpdate) {
-      try {
-        const res = await fetch('https://web-production-1f17.up.railway.app/update_offer_info', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: userId,
-            message: text
-          })
-        });
     
-        const data = await res.json();
-        setMessages(prev => [...prev, {
-          role: 'system',
-          content: data.message || "✅ Offer info updated successfully."
-        }]);
-      } catch (err) {
-        console.error("❌ Failed to update offer info:", err);
-        setMessages(prev => [...prev, {
-          role: 'system',
-          content: '❌ Failed to update offer info.'
-        }]);
-      }
-    
-      return; // prevent fallback to /chat
-  }
 
     // --- Fallback to /chat route (standard chat logic) ---
     try {

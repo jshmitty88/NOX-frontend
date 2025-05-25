@@ -167,7 +167,50 @@ function App() {
           localStorage.setItem('messages', JSON.stringify(updated));
           return updated;
         });
-    
+        // Log to chat-history table
+        try {
+          await fetch('https://web-production-1f17.up.railway.app/chat-history', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: userId,
+              messages: [
+                { role: 'user', content: text },
+                { role: 'assistant', content: messageText }
+              ]
+            })
+          });
+        } catch (err) {
+          console.error("❌ Failed to log /creative_intent to chat-history:", err);
+        }
+        
+        // Optional: tag + remember the creative update
+        try {
+          const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+          });
+          const tagData = await tagRes.json();
+          const tags = tagData.tags || {};
+        
+          await fetch('https://web-production-1f17.up.railway.app/remember', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: userId,
+              topic: "creative_intent",
+              memory_type: "creative",
+              content: text,
+              tag_platform: tags.tag_platform || "unknown",
+              tag_department: tags.tag_department || "general",
+              tag_importance: tags.tag_importance || "high",
+              source_chat_id: "nox-ui"
+            })
+          });
+        } catch (err) {
+          console.error("❌ Failed to tag or remember creative message:", err);
+        }
         return;
       } catch (err) {
         console.error("❌ Failed to call /creative_intent:", err);

@@ -141,7 +141,7 @@ function App() {
     if (
       /revise|rewrite|resend|remove|edit|write|landing page|email|vsl|ad copy/i.test(text)
     ) 
-      try {
+      }try {
         const response = await fetch('https://web-production-1f17.up.railway.app/creative_intent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

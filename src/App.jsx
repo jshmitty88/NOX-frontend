@@ -136,7 +136,49 @@ function App() {
       }
       return
     }
-
+    
+    // Route "remember this..." directly to /remember
+      if (text.toLowerCase().startsWith("remember this")) {
+        try {
+          const tagRes = await fetch('https://web-production-1f17.up.railway.app/classify_tags', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+          });
+          const tagData = await tagRes.json();
+          const tags = tagData.tags || {};
+      
+          await fetch('https://web-production-1f17.up.railway.app/remember', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: userId,
+              topic: "user-input",
+              memory_type: "user_message",
+              content: text,
+              tag_platform: tags.tag_platform || "unknown",
+              tag_department: tags.tag_department || "general",
+              tag_importance: tags.tag_importance || "medium",
+              source_chat_id: "nox-ui"
+            })
+          });
+      
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: 'memory updated (automatically)'
+          }]);
+      
+          return; // prevent fallback to /chat or /creative_intent
+        } catch (err) {
+          console.error("❌ Failed to remember message:", err);
+          setMessages((prev) => [...prev, {
+            role: 'system',
+            content: '❌ Failed to store memory.'
+          }]);
+          return;
+        }
+      }
+    
     // -- Routes to /offer_info_update if user says "update [client name]: "
     if (isOfferUpdate) {
       try {

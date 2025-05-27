@@ -301,6 +301,30 @@ function App() {
     }
 
     
+  const isUrl = /^https?:\/\/[^\s]+$/.test(text.trim());
+
+  if (isUrl) {
+    try {
+      const response = await fetch('https://web-production-1f17.up.railway.app/summarize_url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: text.trim() })
+      });
+  
+      const result = await response.json();
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: result.summary || '✅ URL processed, but no summary was returned.'
+      }]);
+    } catch (err) {
+      console.error("❌ Error summarizing URL:", err);
+      setMessages(prev => [...prev, {
+        role: 'system',
+        content: "❌ Failed to summarize the URL. Please try again later."
+      }]);
+    }
+    return;
+  }
 
     // --- Fallback to /chat route (standard chat logic) ---
     try {

@@ -300,8 +300,8 @@ function App() {
       }
     }
 
-    
-  const isUrl = /^https?:\/\/[^\s]+$/.test(text.trim());
+    //handle URL and video summary 
+  const isUrl = /https?:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com|[^\s]+)/i.test(text.trim());
 
   if (isUrl) {
     try {

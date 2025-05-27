@@ -301,29 +301,54 @@ function App() {
     }
 
     //handle URL and video summary 
-  const isUrl = /https?:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com|[^\s]+)/i.test(text.trim());
-
-  if (isUrl) {
-    try {
-      const response = await fetch('https://web-production-1f17.up.railway.app/summarize_url', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: text.trim() })
-      });
-  
-      const result = await response.json();
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: result.summary || '✅ URL processed, but no summary was returned.'
-      }]);
-    } catch (err) {
-      console.error("❌ Error summarizing URL:", err);
-      setMessages(prev => [...prev, {
-        role: 'system',
-        content: "❌ Failed to summarize the URL. Please try again later."
-      }]);
+    const url = text.trim();
+    const isYouTubeOrVimeo = /https?:\/\/(www\.)?(youtube\.com|youtu\.be|vimeo\.com)/i.test(url);
+    const isGenericUrl = /https?:\/\/[^\s]+/i.test(url);
+    
+    if (isYouTubeOrVimeo || isGenericUrl) {
+      try {
+        const response = await fetch('https://web-production-1f17.up.railway.app/summarize_url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+    
+        const result = await response.json();
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: result.summary || '✅ URL processed, but no summary was returned.'
+        }]);
+      } catch (err) {
+        console.error("❌ Error summarizing URL:", err);
+        setMessages(prev => [...prev, {
+          role: 'system',
+          content: "❌ Failed to summarize the URL. Please try again later."
+        }]);
+      }
+      return;
     }
-    return;
+  
+    if (isUrl) {
+      try {
+        const response = await fetch('https://web-production-1f17.up.railway.app/summarize_url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: text.trim() })
+        });
+    
+        const result = await response.json();
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: result.summary || '✅ URL processed, but no summary was returned.'
+        }]);
+      } catch (err) {
+        console.error("❌ Error summarizing URL:", err);
+        setMessages(prev => [...prev, {
+          role: 'system',
+          content: "❌ Failed to summarize the URL. Please try again later."
+        }]);
+      }
+      return;
   }
 
     // --- Fallback to /chat route (standard chat logic) ---
